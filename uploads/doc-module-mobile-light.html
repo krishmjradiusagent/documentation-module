@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radius · Documents — Mobile Prototype (Light)</title>
+<!-- icons inlined below, no CDN -->
+<style>
+:root{
+  --bg:#F6F6F8; --surface:#FFFFFF; --ink:#18181B; --ink-2:#6B7280; --ink-3:#9CA3AF;
+  --line:#ECECF0; --line-2:#E4E4EA; --accent:#6257F4; --accent-soft:#EEEcFF;
+  --green:#15A150; --green-soft:#E7F6EE; --amber:#B7791F; --amber-soft:#FBF3E2;
+  --blue:#2563EB; --blue-soft:#E7EEFE; --gray-soft:#F1F1F4; --shadow:0 1px 2px rgba(16,18,30,.05),0 6px 20px rgba(16,18,30,.06);
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+svg[data-lucide]{width:18px;height:18px;flex:none;display:inline-block;vertical-align:middle}
+body{margin:0;background:#222230;font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",sans-serif;
+  display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px 12px 60px;color:var(--ink)}
+.toolbar{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:430px}
+.toolbar button{font-size:11px;font-weight:600;color:#C9C9D6;background:#33333f;border:1px solid #44444f;
+  padding:6px 10px;border-radius:8px;cursor:pointer}
+.toolbar button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.toolbar .lbl{color:#7a7a8c;font-size:11px;align-self:center;margin-right:2px}
+
+/* phone */
+.phone{width:390px;height:800px;background:var(--bg);border-radius:42px;position:relative;overflow:hidden;
+  box-shadow:0 0 0 11px #0e0e14,0 0 0 13px #2a2a36,0 30px 60px rgba(0,0,0,.5);display:flex;flex-direction:column}
+.statusbar{height:46px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 6px;font-size:13px;font-weight:600}
+.statusbar .r{display:flex;gap:6px;align-items:center}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#0e0e14;border-radius:0 0 16px 16px;z-index:50}
+
+.screen{flex:1;overflow-y:auto;overflow-x:hidden;position:relative}
+.screen::-webkit-scrollbar{display:none}
+.view{display:none;padding:4px 16px 110px;animation:fade .22s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* header */
+.appbar{display:flex;align-items:center;justify-content:space-between;padding:6px 2px 12px}
+.appbar h1{font-size:24px;font-weight:700;letter-spacing:-.5px;margin:0}
+.appbar .sub{font-size:12.5px;color:var(--ink-2);margin-top:2px;font-weight:500}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#6257F4,#9b7bff);color:#fff;
+  display:grid;place-items:center;font-size:13px;font-weight:700}
+
+.search{display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);
+  border-radius:10px;padding:0 12px;height:40px;margin-bottom:18px;box-shadow:var(--shadow)}
+.search input{border:0;outline:0;flex:1;font-size:14.5px;background:transparent;color:var(--ink)}
+.search input::placeholder{color:var(--ink-3)}
+.search [data-lucide]{width:18px;height:18px;color:var(--ink-3)}
+.search .spark{color:var(--accent)}
+
+.searchres{display:none;margin-bottom:18px}
+.sr-row{display:flex;align-items:center;gap:12px;padding:11px 6px;border-bottom:1px solid var(--line);cursor:pointer}
+.sr-row:active{background:var(--gray-soft)}
+.sr-thumb{width:34px;height:42px;border-radius:6px;background:linear-gradient(160deg,#FFF,#F0F0F5);border:1px solid var(--line-2);position:relative;flex:none;overflow:hidden}
+.sr-thumb::before{content:"";position:absolute;inset:7px 6px;border-top:3px solid #D6D6E0;border-bottom:2px solid #ECECF2}
+.sr-info{flex:1;min-width:0}
+.sr-info b{font-size:14px;font-weight:600;display:block;line-height:1.25}
+.sr-info span{font-size:11.5px;color:var(--ink-2)}
+.sr-row svg[data-lucide]{width:16px;height:16px;color:var(--ink-3)}
+.sr-empty{text-align:center;padding:34px 16px}
+.sr-empty p{font-size:13.5px;color:var(--ink-2);margin:0 0 14px}
+.sec-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-3);
+  margin:2px 2px 10px;display:flex;align-items:center;justify-content:space-between}
+
+/* recents horizontal */
+.rail{display:flex;gap:11px;overflow-x:auto;padding:2px 16px 4px;margin:0 -16px 22px;scroll-snap-type:x mandatory}
+.rail::-webkit-scrollbar{display:none}
+.minicard{min-width:182px;max-width:182px;min-height:172px;scroll-snap-align:start;background:var(--surface);border:1px solid var(--line);
+  border-radius:16px;padding:13px;box-shadow:var(--shadow);position:relative;cursor:pointer;display:flex;flex-direction:column}
+.minicard .thumb{height:74px;border-radius:10px;margin-bottom:10px;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#FBFBFD,#F1F1F6);border:1px solid var(--line)}
+.minicard .thumb .pglines{position:absolute;inset:11px 12px;display:flex;flex-direction:column;gap:4px}
+.minicard .thumb .pglines i{height:3px;border-radius:2px;background:#E1E1EA}
+.minicard .thumb .pglines i:nth-child(1){width:60%;background:#D2D2DE}
+.minicard .thumb .pglines i:nth-child(4){width:42%}
+.minicard h4{font-size:13.5px;margin:0 0 3px;font-weight:650;line-height:1.25;overflow-wrap:anywhere;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:34px}
+.minicard .meta{font-size:11px;color:var(--ink-2);margin-top:auto}
+.dueflag{position:absolute;top:10px;right:10px;background:var(--amber-soft);color:var(--amber);
+  font-size:10px;font-weight:700;padding:3px 7px;border-radius:7px}
+
+/* folder */
+.folder{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:14px;
+  box-shadow:var(--shadow);overflow:hidden}
+.folder-head{display:flex;align-items:center;gap:12px;padding:15px 15px;cursor:pointer}
+.folder-head .fic{width:38px;height:38px;border-radius:11px;background:var(--accent-soft);color:var(--accent);
+  display:grid;place-items:center}
+.folder-head .fic [data-lucide]{width:19px;height:19px}
+.folder-head .ft{flex:1}
+.folder-head .ft b{font-size:15px;font-weight:650;display:block;letter-spacing:-.2px}
+.folder-head .ft span{font-size:12px;color:var(--ink-2)}
+.folder-head .chev{color:var(--ink-3);transition:transform .25s}
+.folder.open .chev{transform:rotate(180deg)}
+.folder-body{display:none;border-top:1px solid var(--line);padding:6px}
+.folder.open .folder-body{display:block}
+
+/* doc card */
+.doc{display:flex;gap:12px;padding:12px;border-radius:14px;position:relative;align-items:flex-start}
+.doc+.doc{margin-top:2px}
+.doc:active{background:var(--gray-soft)}
+.doc .thumb{width:52px;height:64px;border-radius:8px;flex-shrink:0;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#FFF,#F0F0F5);border:1px solid var(--line-2);cursor:pointer}
+.doc .thumb .pglines{position:absolute;inset:9px 8px;display:flex;flex-direction:column;gap:3px}
+.doc .thumb .pglines i{height:2.5px;border-radius:2px;background:#E1E1EA}
+.doc .thumb .pglines i:nth-child(1){width:70%;height:4px;background:#CFCFDA;margin-bottom:2px}
+.doc .thumb .pglines i:nth-child(5){width:45%}
+.doc .thumb .skel{position:absolute;inset:0;background:linear-gradient(100deg,#F0F0F5 30%,#E8E8F0 50%,#F0F0F5 70%);
+  background-size:200% 100%;animation:sk 1.2s infinite}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.doc .body{flex:1;min-width:0}
+.doc .name{font-size:14.5px;font-weight:600;line-height:1.3;letter-spacing:-.2px;margin:1px 0 4px;
+  display:flex;align-items:flex-start;gap:5px}
+.doc .name .lock{width:13px;height:13px;color:var(--ink-3);margin-top:2px;flex-shrink:0}
+.doc .submeta{font-size:11.5px;color:var(--ink-2);margin-bottom:10px}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
+.pill [data-lucide]{width:11px;height:11px}
+.p-pending{background:var(--amber-soft);color:var(--amber)}
+.p-signed{background:var(--green-soft);color:var(--green)}
+.p-shared{background:var(--blue-soft);color:var(--blue)}
+.p-upload{background:#FDECEC;color:#C2410C}
+.p-proc{background:var(--gray-soft);color:var(--ink-2)}
+.cardtop{display:flex;flex-direction:column-reverse;align-items:flex-start;gap:6px}
+
+.actions{display:flex;align-items:center;gap:8px;margin-top:4px}
+.btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:13.5px;font-weight:650;
+  padding:9px 12px;border-radius:11px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn [data-lucide]{width:15px;height:15px}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.sign{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(98,87,244,.32)}
+.btn.willow{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.btn.upload{background:#FDECEC;border-color:transparent;color:#C2410C}
+.btn.icononly{flex:0 0 42px;padding:9px 0}
+.spark-glyph{flex:0 0 40px;height:40px;border-radius:11px;border:1px solid var(--line-2);background:var(--surface);
+  display:grid;place-items:center;cursor:pointer;color:var(--accent)}
+.spark-glyph [data-lucide]{width:17px;height:17px}
+
+/* flip */
+.flip{perspective:1200px}
+.flip-inner{position:relative;width:100%;min-height:128px;transition:transform .5s cubic-bezier(.4,.1,.2,1);transform-style:preserve-3d}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-back{position:absolute;inset:0;transform:rotateY(180deg);backface-visibility:hidden;
+  background:linear-gradient(165deg,#F4F2FF,#FBFBFF);border:1px solid #E3DEFB;border-radius:14px;padding:13px;display:flex;flex-direction:column}
+.flip-front{backface-visibility:hidden}
+.flip.flipped .flip-front{visibility:hidden}
+.wlw-head{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--accent);margin-bottom:9px}
+.wlw-head [data-lucide]{width:14px;height:14px}
+.scope-chip{margin-left:auto;font-size:10px;font-weight:600;background:#fff;border:1px solid #E3DEFB;color:var(--ink-2);padding:2px 7px;border-radius:6px}
+.prompt{background:#fff;border:1px solid #E8E5F8;border-radius:10px;padding:9px 11px;font-size:12.5px;font-weight:550;
+  margin-bottom:7px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;line-height:1.3}
+.prompt [data-lucide]{width:13px;height:13px;color:var(--accent);flex-shrink:0}
+.flip-close{position:absolute;top:5px;right:5px;color:var(--ink-3);cursor:pointer;width:16px;height:16px;
+  box-sizing:content-box;padding:8px}
+
+/* bottom nav */
+.nav{position:absolute;bottom:0;left:0;right:0;height:92px;background:rgba(255,255,255,.86);backdrop-filter:blur(18px);
+  border-top:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-around;padding:13px 22px 0;z-index:40}
+.nav .item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;font-weight:600;color:var(--ink-3);cursor:pointer}
+.nav .item.active{color:var(--ink)}
+.nav .item [data-lucide]{width:22px;height:22px}
+.willow-fab{position:relative;top:-18px;width:60px;height:60px;border-radius:50%;cursor:pointer;
+  background:radial-gradient(circle at 30% 25%,#8B7BFF,#5B4DE8);display:grid;place-items:center;color:#fff;
+  box-shadow:0 8px 22px rgba(91,77,232,.45);border:3px solid #fff}
+.willow-fab::after{content:"";position:absolute;inset:-4px;border-radius:50%;
+  background:conic-gradient(from 0deg,#8B7BFF,#C9A6FF,#5B4DE8,#8B7BFF);z-index:-1;filter:blur(5px);opacity:.7;animation:spin 4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.willow-fab [data-lucide]{width:25px;height:25px}
+.fab-label{position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:600;color:var(--accent)}
+
+/* sheets / overlays */
+.scrim{position:absolute;inset:0;background:rgba(20,20,30,.34);z-index:60;opacity:0;pointer-events:none;transition:.25s}
+.scrim.show{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--surface);border-radius:24px 24px 0 0;z-index:61;
+  transform:translateY(102%);transition:transform .32s cubic-bezier(.32,.72,0,1);max-height:88%;display:flex;flex-direction:column;
+  box-shadow:0 -10px 40px rgba(0,0,0,.18)}
+.sheet.show{transform:translateY(0)}
+.grab{width:38px;height:5px;border-radius:3px;background:#DADAE2;margin:10px auto 4px}
+.sheet-h{padding:8px 20px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.sheet-h .ic{width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.sheet-h .ic [data-lucide]{width:18px;height:18px}
+.sheet-h b{font-size:16px;font-weight:700;letter-spacing:-.3px}
+.sheet-h span{font-size:12px;color:var(--ink-2);display:block;margin-top:1px}
+.sheet-body{padding:16px 20px;overflow-y:auto}
+.sheet-body::-webkit-scrollbar{display:none}
+
+.summary-box{background:var(--gray-soft);border-radius:14px;padding:14px;margin-bottom:14px}
+.summary-box .lab{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);
+  display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.summary-box .lab [data-lucide]{width:13px;height:13px}
+.summary-box p{margin:0;font-size:13.5px;line-height:1.55;color:#3F3F46}
+.kv{display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid var(--line)}
+.kv span{color:var(--ink-2)}.kv b{font-weight:650}
+.disclaimer{display:flex;gap:8px;font-size:11.5px;color:var(--amber);background:var(--amber-soft);padding:10px 12px;border-radius:10px;margin-top:12px;line-height:1.4}
+.disclaimer [data-lucide]{width:15px;height:15px;flex-shrink:0;margin-top:1px}
+.sheet-foot{padding:14px 20px 26px;border-top:1px solid var(--line)}
+/* envelope (the signing unit) */
+.env{border:1px solid #E2DDFB;background:linear-gradient(180deg,#FBFAFF,#FFF);border-radius:14px;padding:13px;margin:4px 2px 6px}
+.env-head{display:flex;align-items:flex-start;gap:11px;margin-bottom:11px}
+.env-ic{width:40px;height:40px;border-radius:11px;background:var(--accent);color:#fff;display:grid;place-items:center;flex:none}
+.env-ic svg[data-lucide]{width:20px;height:20px}
+.env-t{flex:1;min-width:0}
+.env-t b{font-size:15px;font-weight:680;letter-spacing:-.2px;line-height:1.25;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.env-t .emeta{font-size:11.5px;color:var(--ink-2);display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:4px}
+.pill.small{font-size:10px;padding:2px 6px}
+.env-docs{border-top:1px solid #EEEBFB;border-bottom:1px solid #EEEBFB;margin-bottom:11px;padding:2px 0}
+.env-doc{display:flex;align-items:center;gap:10px;padding:8px 2px;cursor:pointer;font-size:13px;font-weight:550}
+.env-doc:active{background:#F4F2FF}
+.env-doc .efi{width:26px;height:32px;border-radius:5px;background:#fff;border:1px solid var(--line-2);position:relative;flex:none;overflow:hidden}
+.env-doc .efi::before{content:"";position:absolute;inset:6px 5px;border-top:3px solid #D6D6E0;border-bottom:2px solid #ECECF2}
+.env-doc .en{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.env-doc svg[data-lucide]{width:15px;height:15px;color:var(--ink-3)}
+.env-thumb{display:grid;place-items:center;color:var(--accent);background:var(--accent-soft);border-color:#E2DDFB!important}
+.env-thumb svg[data-lucide]{width:28px;height:28px}
+.liblabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-3);margin:16px 8px 4px}
+/* signing order — inline on card */
+.so-inline{display:flex;align-items:center;gap:5px;margin:-2px 0 10px}
+.so-dot{width:7px;height:7px;border-radius:50%;background:var(--line-2);flex:none}
+.so-dot.done{background:var(--green)}
+.so-dot.now{background:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.so-inline em{font-style:normal;font-size:11px;font-weight:650;color:var(--accent);margin-left:4px}
+.so-inline.tap{cursor:pointer}
+.so-go{margin-left:auto;color:var(--ink-3);width:16px!important;height:16px!important}
+/* signing order */
+.signorder{border:1px solid var(--line);border-radius:14px;padding:12px 13px;margin-bottom:14px;background:#fff}
+.so-head{display:flex;flex-direction:column;gap:11px;cursor:pointer}
+.so-top{display:flex;align-items:center;justify-content:space-between}
+.so-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-3)}
+.so-status{font-size:12px;font-weight:650;color:var(--accent);display:flex;align-items:center}
+.so-status .sep{color:var(--ink-3);font-weight:500;margin:0 4px}
+.so-chev{color:var(--ink-3);transition:transform .25s;margin-left:6px}
+.signorder.open .so-chev{transform:rotate(180deg)}
+.so-steps{display:flex;align-items:center}
+.so-av{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:9.5px;font-weight:700;
+  background:var(--gray-soft);color:var(--ink-3);border:1.5px solid var(--line-2);flex:none}
+.so-av.done{background:var(--green-soft);color:var(--green);border-color:#BFE6CD}
+.so-av.now{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.so-line{height:2px;flex:1;min-width:12px;background:var(--line-2)}
+.so-line.done{background:#BFE6CD}
+.so-body{display:none;margin-top:13px;border-top:1px solid var(--line);padding-top:4px}
+.signorder.open .so-body{display:block}
+.so-row{display:flex;align-items:center;gap:11px;padding:9px 0}
+.so-num{font-size:11px;font-weight:700;color:var(--ink-3);width:10px;text-align:center}
+.so-info{flex:1}.so-info b{font-size:13.5px;font-weight:600;display:block;line-height:1.2}
+.so-info span{font-size:11.5px;color:var(--ink-2)}
+.so-tag{font-size:11px;font-weight:650;color:var(--ink-3);white-space:nowrap}
+.so-tag.done{color:var(--green)}.so-tag.now{color:var(--accent)}
+.menurow{display:flex;align-items:center;gap:14px;padding:15px 6px;font-size:15px;font-weight:550;cursor:pointer;border-bottom:1px solid var(--line)}
+.menurow:last-child{border-bottom:0}
+.menurow:active{background:var(--gray-soft)}
+.menurow svg[data-lucide]{width:20px;height:20px;color:var(--ink-2)}
+.bigbtn{width:100%;padding:15px;border-radius:14px;border:0;font-size:15.5px;font-weight:700;cursor:pointer;
+  background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 18px rgba(98,87,244,.34)}
+
+/* willow chat sheet */
+.chat{display:flex;flex-direction:column;gap:10px}
+.bubble{max-width:84%;padding:11px 13px;border-radius:15px;font-size:13.5px;line-height:1.5}
+.bubble.me{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:5px}
+.bubble.w{align-self:flex-start;background:var(--gray-soft);color:#27272A;border-bottom-left-radius:5px}
+.chipscroll{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.chip{font-size:12px;font-weight:600;background:var(--accent-soft);color:var(--accent);padding:8px 11px;border-radius:10px;cursor:pointer}
+.askbar{display:flex;align-items:center;gap:9px;border:1px solid var(--line-2);border-radius:13px;padding:11px 13px;margin-top:4px}
+.askbar input{border:0;outline:0;flex:1;font-size:14px;background:transparent}
+.askbar .mic{color:var(--accent);cursor:pointer}
+
+/* viewer */
+.viewer-top{display:flex;align-items:center;gap:12px;padding:8px 2px 14px}
+.viewer-top .back{cursor:pointer;color:var(--ink)}
+.viewer-top .vt{flex:1;min-width:0}
+.viewer-top .vt b{font-size:15.5px;font-weight:650;display:block;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.viewer-top .vt span{font-size:11.5px;color:var(--ink-2)}
+.page{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:22px 20px;margin-bottom:12px}
+.page .ttl{font-size:15px;font-weight:700;text-align:center;margin-bottom:4px}
+.page .st{font-size:11px;color:var(--ink-3);text-align:center;margin-bottom:18px;text-transform:uppercase;letter-spacing:1px}
+.page .ln{height:8px;border-radius:3px;background:#EFEFF3;margin-bottom:9px}
+.page .ln.s{width:55%}.page .ln.m{width:80%}
+.willow-dock{position:absolute;left:10px;right:10px;bottom:104px;background:#fff;border:1px solid #E3DEFB;
+  border-radius:18px;box-shadow:0 10px 30px rgba(80,70,180,.18);padding:13px;z-index:35}
+.willow-dock .dh{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--accent);margin-bottom:9px}
+.willow-dock .dh [data-lucide]{width:14px;height:14px}
+
+/* voice overlay */
+.voice{position:absolute;inset:0;z-index:70;background:linear-gradient(180deg,rgba(98,87,244,.97),rgba(60,50,170,.99));
+  color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;gap:30px;text-align:center;padding:40px}
+.voice.show{display:flex;animation:fade .25s}
+.voice .orb{width:130px;height:130px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6,#fff1);
+  display:grid;place-items:center;position:relative}
+.voice .orb::before,.voice .orb::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #ffffff55;animation:pulse 2s infinite}
+.voice .orb::after{animation-delay:1s}
+@keyframes pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.7);opacity:0}}
+.voice .orb [data-lucide]{width:46px;height:46px}
+.wave{display:flex;gap:5px;align-items:flex-end;height:42px}
+.wave i{width:5px;border-radius:3px;background:#fff;animation:wv .9s ease-in-out infinite}
+.wave i:nth-child(2){animation-delay:.1s}.wave i:nth-child(3){animation-delay:.2s}
+.wave i:nth-child(4){animation-delay:.3s}.wave i:nth-child(5){animation-delay:.15s}
+.wave i:nth-child(6){animation-delay:.25s}.wave i:nth-child(7){animation-delay:.05s}
+@keyframes wv{0%,100%{height:9px}50%{height:38px}}
+.voice h2{font-size:21px;font-weight:700;margin:0;letter-spacing:-.4px}
+.voice p{font-size:14px;opacity:.8;margin:0;max-width:240px;line-height:1.5}
+.voice .end{margin-top:10px;background:#fff;color:var(--accent);border:0;font-size:15px;font-weight:700;padding:13px 30px;border-radius:30px;cursor:pointer}
+.tip{position:absolute;bottom:118px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:12px;
+  font-weight:600;padding:9px 14px;border-radius:11px;z-index:45;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.tip::after{content:"";position:absolute;bottom:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:12px;height:12px;background:var(--ink)}
+
+/* empty / states */
+.empty{text-align:center;padding:50px 24px}
+.empty .ei{width:70px;height:70px;border-radius:20px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin:0 auto 18px}
+.empty .ei [data-lucide]{width:32px;height:32px}
+.empty h3{font-size:18px;margin:0 0 6px;font-weight:700}
+.empty p{font-size:13.5px;color:var(--ink-2);margin:0 auto 18px;max-width:250px;line-height:1.5}
+.empty .ask{display:inline-flex;gap:8px;align-items:center;background:var(--accent);color:#fff;font-weight:650;font-size:14px;padding:12px 18px;border-radius:13px;cursor:pointer;border:0}
+.nomatch{background:var(--accent-soft);border-radius:14px;padding:16px;text-align:center;font-size:13.5px;color:#4b4470;margin-top:8px}
+.nomatch button{margin-top:10px;background:var(--accent);color:#fff;border:0;font-weight:650;font-size:13px;padding:9px 14px;border-radius:10px;cursor:pointer}
+.quietnote{font-size:11px;color:var(--ink-3);margin-top:8px;display:flex;gap:5px;align-items:center}
+.quietnote [data-lucide]{width:12px;height:12px}
+.toast{position:absolute;bottom:110px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#fff;
+  font-size:13px;font-weight:600;padding:11px 18px;border-radius:12px;z-index:55;opacity:0;transition:.3s;display:flex;gap:8px;align-items:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast [data-lucide]{width:16px;height:16px}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="lbl">Jump to state:</span>
+  <button class="on" onclick="setState('home',this)">Home</button>
+  <button onclick="setState('zero',this)">Zero docs</button>
+  <button onclick="setState('nomatch',this)">Search no-match</button>
+  <button onclick="setState('processing',this)">Processing</button>
+  <button onclick="setState('unreadable',this)">Unreadable</button>
+</div>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="statusbar">
+    <span>9:41</span>
+    <span class="r"><i data-lucide="signal" style="width:15px"></i><i data-lucide="wifi" style="width:15px"></i><i data-lucide="battery-full" style="width:19px"></i></span>
+  </div>
+
+  <div class="screen">
+
+    <!-- ============ HOME ============ -->
+    <div class="view active" id="v-home">
+      <div class="appbar">
+        <div>
+          <h1>Documents</h1>
+          <div class="sub" id="homeSub">1 envelope to sign · 1 upload requested</div>
+        </div>
+        <div class="avatar">KS</div>
+      </div>
+
+      <div class="search">
+        <i data-lucide="search"></i>
+        <input id="searchInput" placeholder="Search your documents" oninput="doSearch(this.value)" autocomplete="off">
+        <i data-lucide="sparkles" class="spark" style="cursor:pointer" onclick="openWillow('all')"></i>
+      </div>
+      <div id="searchResults" class="searchres"></div>
+      <div id="homeBody">
+
+      <!-- recents / needs-action rail -->
+      <div class="sec-label">Needs you</div>
+      <div class="rail">
+        <div class="minicard" onclick="openSign()">
+          <div class="dueflag">Sign</div>
+          <div class="thumb"><div class="pglines"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <h4 title="12 Oak Avenue, Unit 4B, Springfield IL 62704">12 Oak Avenue, Unit 4B, Springfield IL 62704</h4>
+          <div class="meta">You're next · 2 of 4</div>
+        </div>
+        <div class="minicard" style="border-color:#F3D9D9" onclick="toast('Upload flow (stub)')">
+          <div class="dueflag" style="background:#FDECEC;color:#C2410C">Upload</div>
+          <div class="thumb"><div class="pglines"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <h4>Proof of Funds</h4>
+          <div class="meta">220 Pine St · Requested</div>
+        </div>
+      </div>
+
+      <!-- folders by property (2 properties → folders) -->
+      <div class="sec-label">By property <span style="text-transform:none;font-weight:600;color:var(--ink-3)">2 properties</span></div>
+
+      <div class="folder open" id="fold1">
+        <div class="folder-head" onclick="toggleFolder('fold1')">
+          <div class="fic"><i data-lucide="home"></i></div>
+          <div class="ft"><b>12 Oak Avenue</b><span>1 envelope awaiting you · 9 docs</span></div>
+          <i data-lucide="chevron-down" class="chev"></i>
+        </div>
+        <div class="folder-body">
+
+          <!-- IN-PROGRESS ENVELOPE (the signing unit) -->
+          <div class="env">
+            <div class="env-head">
+              <div class="env-ic"><i data-lucide="mail"></i></div>
+              <div class="env-t">
+                <b>12 Oak Avenue, Unit 4B, Springfield</b>
+                <div class="emeta"><span class="pill p-pending small"><i data-lucide="pen-line"></i>Ready to sign</span><span>3 docs · sent Jun 24</span></div>
+              </div>
+            </div>
+            <div class="so-inline tap" onclick="openOrder()">
+              <span class="so-dot done"></span><span class="so-dot now"></span><span class="so-dot"></span><span class="so-dot"></span>
+              <em>You're next · 2 of 4</em>
+              <i data-lucide="chevron-right" class="so-go"></i>
+            </div>
+            <div class="env-docs">
+              <div class="env-doc" onclick="openViewer('Purchase Agreement','12 Oak Avenue')"><div class="efi"></div><span class="en">Purchase Agreement</span><i data-lucide="chevron-right"></i></div>
+              <div class="env-doc" onclick="openViewer('Lead-Based Paint Disclosure','12 Oak Avenue')"><div class="efi"></div><span class="en">Lead-Based Paint Disclosure</span><i data-lucide="chevron-right"></i></div>
+              <div class="env-doc" onclick="openViewer('Buyer Disclosure','12 Oak Avenue')"><div class="efi"></div><span class="en">Buyer Disclosure</span><i data-lucide="chevron-right"></i></div>
+            </div>
+            <div class="actions">
+              <button class="btn sign" onclick="openSign()"><i data-lucide="pen-line"></i>Review &amp; Sign</button>
+              <div class="spark-glyph" onclick="openWillow('doc')"><i data-lucide="sparkles"></i></div>
+              <button class="btn icononly" onclick="openDocMenu()"><i data-lucide="ellipsis"></i></button>
+            </div>
+          </div>
+
+          <!-- COMPLETED LIBRARY (no per-doc status — browse / Ask Willow) -->
+          <div class="liblabel">Completed documents</div>
+          <div class="doc">
+            <div class="thumb" onclick="openViewer('Closing Disclosure','12 Oak Avenue')"><div class="pglines"><i></i><i></i><i></i><i></i><i></i></div></div>
+            <div class="body">
+              <div class="name">Closing Disclosure</div>
+              <div class="submeta">12 Oak Avenue · Jun 18</div>
+              <div class="actions">
+                <button class="btn willow" onclick="openWillow('doc')"><i data-lucide="sparkles"></i>Ask Willow</button>
+                <button class="btn icononly" onclick="openDocMenu()"><i data-lucide="ellipsis"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="doc">
+            <div class="thumb" onclick="openViewer('Home Inspection Report','12 Oak Avenue')"><div class="pglines"><i></i><i></i><i></i><i></i><i></i></div></div>
+            <div class="body">
+              <div class="name">Home Inspection Report</div>
+              <div class="submeta">12 Oak Avenue · Jun 15</div>
+              <div class="actions">
+                <button class="btn willow" onclick="openWillow('doc')"><i data-lucide="sparkles"></i>Ask Willow</button>
+                <button class="btn icononly" onclick="openDocMenu()"><i data-lucide="ellipsis"></i></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="folder" id="fold2">
+        <div class="folder-head" onclick="toggleFolder('fold2')">
+          <div class="fic"><i data-lucide="home"></i></div>
+          <div class="ft"><b>220 Pine Street</b><span>No envelope in progress · upload requested</span></div>
+          <i data-lucide="chevron-down" class="chev"></i>
+        </div>
+        <div class="folder-body">
+          <div class="doc">
+            <div class="thumb" style="display:grid;place-items:center;color:#C2410C;background:#FDECEC;border-color:#F3D9D9" onclick="toast('Upload flow (stub)')"><i data-lucide="upload" style="width:22px;height:22px"></i></div>
+            <div class="body">
+              <div class="cardtop">
+                <div class="name">Proof of Funds</div>
+                <span class="pill p-upload"><i data-lucide="upload"></i>Needs upload</span>
+              </div>
+              <div class="submeta">220 Pine Street · Requested by agent</div>
+              <div class="actions">
+                <button class="btn upload" onclick="toast('Upload flow (stub)')"><i data-lucide="upload"></i>Upload</button>
+                <div class="spark-glyph" onclick="openWillow('doc')"><i data-lucide="sparkles"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div><!-- /homeBody -->
+    </div>
+
+    <!-- ============ VIEWER ============ -->
+    <div class="view" id="v-viewer">
+      <div class="viewer-top">
+        <i data-lucide="chevron-left" class="back" onclick="go('home')"></i>
+        <div class="vt"><b id="vwName">Closing Disclosure</b><span id="vwProp">12 Oak Avenue · Signed</span></div>
+        <i data-lucide="ellipsis" style="color:var(--ink-2)" onclick="toast('Download · Share · Print')"></i>
+      </div>
+      <div class="page">
+        <div class="ttl" id="vwTtl">Closing Disclosure</div>
+        <div class="st">Final · Page 1 of 5</div>
+        <div class="ln m"></div><div class="ln"></div><div class="ln s"></div>
+        <div class="ln"></div><div class="ln m"></div><div class="ln"></div>
+        <div class="ln s"></div><div class="ln m"></div><div class="ln"></div><div class="ln s"></div>
+      </div>
+      <div class="page" style="opacity:.5"><div class="ln"></div><div class="ln m"></div><div class="ln s"></div><div class="ln"></div></div>
+
+      <div class="willow-dock">
+        <div class="dh"><i data-lucide="sparkles"></i>Willow · this document</div>
+        <div class="chipscroll">
+          <div class="chip" onclick="openWillow('doc')">Summarize</div>
+          <div class="chip" onclick="openWillow('doc')">Explain line 12</div>
+          <div class="chip" onclick="openWillow('doc')">Cash to close?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ ZERO DOCS ============ -->
+    <div class="view" id="v-zero">
+      <div class="appbar"><div><h1>Documents</h1><div class="sub">Welcome aboard</div></div><div class="avatar">KS</div></div>
+      <div class="empty">
+        <div class="ei"><i data-lucide="folder-open"></i></div>
+        <h3>Nothing to sign yet</h3>
+        <p>When your agent sends paperwork for your purchase, it'll show up here. Willow can tell you what to expect at this stage.</p>
+        <button class="ask" onclick="openWillow('all')"><i data-lucide="sparkles"></i>Ask what to expect</button>
+      </div>
+    </div>
+
+    <!-- ============ SEARCH NO MATCH ============ -->
+    <div class="view" id="v-nomatch">
+      <div class="appbar"><div><h1>Documents</h1></div><div class="avatar">KS</div></div>
+      <div class="search"><i data-lucide="search"></i><input value="amendment 3" readonly><i data-lucide="x" style="color:var(--ink-3)" onclick="setState('home')"></i></div>
+      <div class="nomatch">
+        <i data-lucide="search" style="width:26px;height:26px;color:var(--accent)"></i>
+        <div style="margin-top:8px;font-weight:600">No documents match "amendment 3"</div>
+        <button onclick="openWillow('all')"><i data-lucide="sparkles" style="width:13px;vertical-align:-2px"></i> Ask Willow instead</button>
+      </div>
+    </div>
+
+    <!-- ============ PROCESSING ============ -->
+    <div class="view" id="v-processing">
+      <div class="appbar"><div><h1>Documents</h1><div class="sub">1 document processing…</div></div><div class="avatar">KS</div></div>
+      <div class="sec-label">Just arrived</div>
+      <div class="folder open"><div class="folder-body" style="border:0">
+        <div class="doc">
+          <div class="thumb"><div class="skel"></div></div>
+          <div class="body">
+            <div class="cardtop"><div class="name">Seller Disclosure Packet</div><span class="pill p-proc"><i data-lucide="loader"></i>Processing</span></div>
+            <div class="submeta">12 Oak Avenue · Uploading…</div>
+            <div class="actions">
+              <div class="spark-glyph" style="opacity:.5"><i data-lucide="sparkles"></i></div>
+              <span style="font-size:11.5px;color:var(--ink-3);align-self:center">Willow will be ready once this finishes</span>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      <p style="font-size:12px;color:var(--ink-3);text-align:center;margin-top:20px">Card stays tappable. Prompts populate the moment the scan finishes.</p>
+    </div>
+
+    <!-- ============ UNREADABLE ============ -->
+    <div class="view" id="v-unreadable">
+      <div class="appbar"><div><h1>Documents</h1></div><div class="avatar">KS</div></div>
+      <div class="sec-label">12 Oak Avenue</div>
+      <div class="folder open"><div class="folder-body" style="border:0">
+        <div class="doc flip">
+          <div class="flip-inner">
+            <div class="flip-front" style="display:flex;gap:12px;width:100%">
+              <div class="thumb"><div class="pglines"><i></i><i></i><i></i><i></i><i></i></div></div>
+              <div class="body">
+                <div class="cardtop"><div class="name">Scanned Addendum (photo)</div><span class="pill p-signed"><i data-lucide="check"></i>Signed</span></div>
+                <div class="submeta">12 Oak Avenue · Jun 10</div>
+                <div class="actions"><button class="btn willow" onclick="openWillow('doc')"><i data-lucide="sparkles"></i>Ask Willow</button><button class="btn icononly"><i data-lucide="ellipsis"></i></button></div>
+              </div>
+            </div>
+            <div class="flip-back">
+              <i data-lucide="x" class="flip-close" onclick="openWillow('doc')"></i>
+              <div class="wlw-head"><i data-lucide="sparkles"></i>Willow<span class="scope-chip">Asking: this doc</span></div>
+              <div class="prompt" onclick="openWillow('doc')">What type of document is this?<i data-lucide="arrow-right"></i></div>
+              <div class="prompt" onclick="openWillow('doc')">Who are the parties?<i data-lucide="arrow-right"></i></div>
+              <div class="quietnote"><i data-lucide="circle-alert"></i>Couldn't read this fully — it's a photo. <a style="color:var(--accent)" onclick="toast('Routed to agent')">Ask your agent</a></div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+  </div><!-- /screen -->
+
+  <!-- bottom nav -->
+  <div class="nav">
+    <div class="item" onclick="go('home')"><i data-lucide="home"></i>Home</div>
+    <div class="item active" onclick="go('home')"><i data-lucide="file-text"></i>Docs</div>
+    <div class="willow-fab" id="fab"><i data-lucide="mic"></i><span class="fab-label">Willow</span></div>
+    <div class="item" onclick="toast('Transactions')"><i data-lucide="git-branch"></i>Deals</div>
+    <div class="item" onclick="toast('Profile')"><i data-lucide="user"></i>You</div>
+  </div>
+
+  <!-- voice tip (first session) -->
+  <div class="tip" id="voiceTip">Long-press to talk to Willow</div>
+
+  <!-- SIGN sheet -->
+  <div class="scrim" id="scrim" onclick="closeSheets()"></div>
+  <div class="sheet" id="signSheet">
+    <div class="grab"></div>
+    <div class="sheet-h">
+      <div class="ic"><i data-lucide="mail"></i></div>
+      <div><b>12 Oak Avenue, Unit 4B</b><span>Signing envelope · 3 documents</span></div>
+    </div>
+    <div class="sheet-body">
+      <div class="signorder" id="signorder">
+        <div class="so-head" onclick="toggleSO()">
+          <div class="so-top">
+            <span class="so-label">Signing order</span>
+            <span class="so-status">You're next<span class="sep">·</span>2 of 4<i data-lucide="chevron-down" class="so-chev"></i></span>
+          </div>
+          <div class="so-steps">
+            <span class="so-av done">ML</span><span class="so-line done"></span>
+            <span class="so-av now">You</span><span class="so-line"></span>
+            <span class="so-av">TR</span><span class="so-line"></span>
+            <span class="so-av">JK</span>
+          </div>
+        </div>
+        <div class="so-body">
+          <div class="so-row"><span class="so-num">1</span><span class="so-av done">ML</span><div class="so-info"><b>Maria Lopez</b><span>Buyer's Agent</span></div><span class="so-tag done">Signed · Jun 24</span></div>
+          <div class="so-row"><span class="so-num">2</span><span class="so-av now">You</span><div class="so-info"><b>You</b><span>Buyer</span></div><span class="so-tag now">Your turn</span></div>
+          <div class="so-row"><span class="so-num">3</span><span class="so-av">TR</span><div class="so-info"><b>Tom Reed</b><span>Seller's Agent</span></div><span class="so-tag">Waiting</span></div>
+          <div class="so-row"><span class="so-num">4</span><span class="so-av">JK</span><div class="so-info"><b>James Kim</b><span>Seller</span></div><span class="so-tag">Waiting</span></div>
+        </div>
+      </div>
+      <div class="summary-box">
+        <div class="lab"><i data-lucide="sparkles"></i>What you're signing, in plain English</div>
+        <p>This envelope finalizes your purchase of <b>12 Oak Avenue for $740,000</b>. It locks your price, sets a <b>$22,000 earnest deposit</b>, and gives you until <b>Jul 14</b> for inspection. Closing is targeted for <b>Aug 1</b>.</p>
+      </div>
+      <div class="liblabel" style="margin:2px 2px 4px">In this envelope</div>
+      <div class="env-docs" style="border:0;margin-bottom:8px">
+        <div class="env-doc" onclick="closeSheets();openViewer('Purchase Agreement','12 Oak Avenue')"><div class="efi"></div><span class="en">Purchase Agreement</span><i data-lucide="chevron-right"></i></div>
+        <div class="env-doc" onclick="closeSheets();openViewer('Lead-Based Paint Disclosure','12 Oak Avenue')"><div class="efi"></div><span class="en">Lead-Based Paint Disclosure</span><i data-lucide="chevron-right"></i></div>
+        <div class="env-doc" onclick="closeSheets();openViewer('Buyer Disclosure','12 Oak Avenue')"><div class="efi"></div><span class="en">Buyer Disclosure</span><i data-lucide="chevron-right"></i></div>
+      </div>
+      <div class="kv"><span>Purchase price</span><b>$740,000</b></div>
+      <div class="kv"><span>Earnest money</span><b>$22,000</b></div>
+      <div class="kv"><span>Inspection deadline</span><b>Jul 14, 2026</b></div>
+      <div class="kv" style="border:0"><span>Signers</span><b>You + 1</b></div>
+      <div class="disclaimer"><i data-lucide="shield-alert"></i>Willow gives you the gist — not legal advice. Check anything unclear with your agent before you sign.</div>
+    </div>
+    <div class="sheet-foot">
+      <button class="bigbtn" onclick="doSign()"><i data-lucide="pen-line"></i>Review &amp; Sign in DocuSign</button>
+    </div>
+  </div>
+
+  <!-- WILLOW chat sheet -->
+  <div class="sheet" id="willowSheet">
+    <div class="grab"></div>
+    <div class="sheet-h">
+      <div class="ic"><i data-lucide="sparkles"></i></div>
+      <div><b>Willow</b><span id="wlwScope">Asking about all documents</span></div>
+      <i data-lucide="mic" style="margin-left:auto;color:var(--accent)" onclick="showVoice()"></i>
+    </div>
+    <div class="sheet-body">
+      <div class="chat" id="chat">
+        <div class="bubble w" id="wlwOpen">Hi Kira — I've read your documents. Ask me anything, or tap a question below.</div>
+      </div>
+      <div class="chipscroll" id="wlwChips">
+        <div class="chip" onclick="askWillow('What did I buy 12 Oak Avenue for?')">What did I buy 12 Oak for?</div>
+        <div class="chip" onclick="askWillow('Which documents still need my signature?')">What still needs signing?</div>
+        <div class="chip" onclick="askWillow('Summarize everything for 220 Pine St')">Summarize 220 Pine St</div>
+      </div>
+    </div>
+    <div class="sheet-foot">
+      <div class="askbar"><input placeholder="Ask Willow…" id="askIn" onkeydown="if(event.key==='Enter')askWillow(this.value)"><i data-lucide="mic" class="mic" onclick="showVoice()"></i></div>
+    </div>
+  </div>
+
+  <!-- SIGNING ORDER sheet -->
+  <div class="sheet" id="orderSheet">
+    <div class="grab"></div>
+    <div class="sheet-h">
+      <div class="ic"><i data-lucide="mail"></i></div>
+      <div><b>Signing order</b><span>12 Oak Avenue, Unit 4B</span></div>
+    </div>
+    <div class="sheet-body" style="padding-bottom:26px">
+      <div class="so-row"><span class="so-num">1</span><span class="so-av done">ML</span><div class="so-info"><b>Maria Lopez</b><span>Buyer's Agent</span></div><span class="so-tag done">Signed · Jun 24</span></div>
+      <div class="so-row"><span class="so-num">2</span><span class="so-av now">You</span><div class="so-info"><b>You</b><span>Buyer</span></div><span class="so-tag now">Your turn</span></div>
+      <div class="so-row"><span class="so-num">3</span><span class="so-av">TR</span><div class="so-info"><b>Tom Reed</b><span>Seller's Agent</span></div><span class="so-tag">Waiting</span></div>
+      <div class="so-row"><span class="so-num">4</span><span class="so-av">JK</span><div class="so-info"><b>James Kim</b><span>Seller</span></div><span class="so-tag">Waiting</span></div>
+    </div>
+    <div class="sheet-foot">
+      <button class="bigbtn" onclick="closeSheets();openSign()"><i data-lucide="pen-line"></i>Review &amp; Sign</button>
+    </div>
+  </div>
+
+  <!-- DOC ⋯ menu -->
+  <div class="sheet" id="docMenu">
+    <div class="grab"></div>
+    <div class="sheet-h">
+      <div class="ic"><i data-lucide="file-text"></i></div>
+      <div><b>Purchase Agreement</b><span>12 Oak Avenue</span></div>
+    </div>
+    <div class="sheet-body" style="padding-bottom:30px">
+      <div class="menurow" onclick="closeSheets();openViewer('Purchase Agreement','12 Oak Avenue')"><i data-lucide="eye"></i>View document</div>
+      <div class="menurow" onclick="closeSheets();toast('Downloading…')"><i data-lucide="download"></i>Download</div>
+      <div class="menurow" onclick="closeSheets();toast('Share sheet opened')"><i data-lucide="share-2"></i>Share</div>
+      <div class="menurow" onclick="closeSheets();openWillow('doc')"><i data-lucide="sparkles" style="color:var(--accent)"></i>Ask Willow about this</div>
+    </div>
+  </div>
+
+  <!-- VOICE overlay -->
+  <div class="voice" id="voice">
+    <div class="orb"><i data-lucide="mic"></i></div>
+    <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <h2>Listening…</h2>
+    <p id="voiceTxt">"Willow, what did I buy 12 Oak Avenue for?"</p>
+    <button class="end" onclick="hideVoice()">Done</button>
+  </div>
+
+  <div class="toast" id="toast"><i data-lucide="circle-check"></i><span id="toastMsg">Done</span></div>
+
+</div><!-- /phone -->
+
+<script>
+const $=s=>document.querySelector(s);
+/* ---- inline icon set (no CDN) ---- */
+const ICON={
+ search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+ sparkles:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/>',
+ mic:'<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/>',
+ 'pen-line':'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+ check:'<path d="M20 6 9 17l-5-5"/>',
+ x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+ 'chevron-down':'<path d="m6 9 6 6 6-6"/>',
+ 'chevron-left':'<path d="m15 18-6-6 6-6"/>',
+ 'chevron-right':'<path d="m9 18 6-6-6-6"/>',
+ mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+ 'arrow-right':'<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+ upload:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/>',
+ users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+ ellipsis:'<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
+ home:'<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',
+ 'file-text':'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/>',
+ 'git-branch':'<path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+ 'circle-alert':'<circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>',
+ 'circle-check':'<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+ 'shield-alert':'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/>',
+ loader:'<path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.9 4.9 2.9 2.9"/><path d="m16.2 16.2 2.9 2.9"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.9 19.1 2.9-2.9"/><path d="m16.2 7.8 2.9-2.9"/>',
+ 'folder-open':'<path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.55 6a2 2 0 0 1-1.94 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H18a2 2 0 0 1 2 2v2"/>',
+ signal:'<path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 20V4"/>',
+ wifi:'<path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M12 20h.01"/>',
+ 'battery-full':'<rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 11v2"/><path d="M6 10v4"/><path d="M10 10v4"/><path d="M14 10v4"/>',
+ eye:'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+ download:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>',
+ 'share-2':'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/>'
+};
+const SOLID=['sparkles','ellipsis'];
+function icons(){
+  document.querySelectorAll('i[data-lucide]').forEach(el=>{
+    const n=el.getAttribute('data-lucide'),p=ICON[n];if(!p)return;
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('viewBox','0 0 24 24');
+    svg.setAttribute('data-lucide',n);
+    if(SOLID.includes(n)){svg.setAttribute('fill','currentColor');svg.setAttribute('stroke','none');}
+    else{svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','2');svg.setAttribute('stroke-linecap','round');svg.setAttribute('stroke-linejoin','round');}
+    if(el.style.cssText)svg.style.cssText=el.style.cssText;
+    if(el.className)svg.setAttribute('class',el.className);
+    svg.innerHTML=p;
+    el.replaceWith(svg);
+  });
+}
+icons();
+
+function go(v){
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
+  $('#v-'+v).classList.add('active');
+  $('.screen').scrollTop=0;
+}
+function setState(s,btn){
+  if(btn){document.querySelectorAll('.toolbar button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+  const map={home:'home',zero:'zero',nomatch:'nomatch',processing:'processing',unreadable:'unreadable'};
+  go(map[s]);
+}
+function toggleFolder(id){$('#'+id).classList.toggle('open');}
+function toggleSO(){$('#signorder').classList.toggle('open');}
+
+/* ---- search ---- */
+const DOCS=[
+ {n:'Purchase Agreement',p:'12 Oak Avenue',env:1},
+ {n:'Lead-Based Paint Disclosure',p:'12 Oak Avenue',env:1},
+ {n:'Buyer Disclosure',p:'12 Oak Avenue',env:1},
+ {n:'Closing Disclosure',p:'12 Oak Avenue'},
+ {n:'Home Inspection Report',p:'12 Oak Avenue'},
+ {n:'Proof of Funds',p:'220 Pine Street'}
+];
+function esc(s){return s.replace(/'/g,"\\'");}
+function doSearch(v){
+  const q=(v||'').trim().toLowerCase(),res=$('#searchResults'),body=$('#homeBody');
+  if(!q){res.style.display='none';res.innerHTML='';body.style.display='';return;}
+  body.style.display='none';res.style.display='block';
+  const m=DOCS.filter(d=>d.n.toLowerCase().includes(q)||d.p.toLowerCase().includes(q));
+  if(!m.length){
+    res.innerHTML='<div class="sr-empty"><p>No documents match &ldquo;'+v+'&rdquo;</p><button class="ask" onclick="openWillow(\'all\')"><i data-lucide="sparkles"></i>Ask Willow instead</button></div>';
+  }else{
+    res.innerHTML=m.map(d=>'<div class="sr-row" onclick="clearSearch();openViewer(\''+esc(d.n)+'\',\''+d.p+'\')"><div class="sr-thumb"></div><div class="sr-info"><b>'+d.n+'</b><span>'+d.p+(d.env?' · in signing envelope':'')+'</span></div><i data-lucide="chevron-right"></i></div>').join('');
+  }
+  icons();
+}
+function clearSearch(){const i=$('#searchInput');if(i)i.value='';doSearch('');}
+function flipCard(el){el.closest('.flip').classList.toggle('flipped');}
+
+function openViewer(name,prop){
+  $('#vwName').textContent=name;$('#vwTtl').textContent=name;
+  $('#vwProp').textContent=prop+' · Signed';
+  go('viewer');
+}
+
+let sheetOpen=null;
+function showScrim(){$('#scrim').classList.add('show');}
+function closeSheets(){
+  $('#scrim').classList.remove('show');
+  $('#signSheet').classList.remove('show');
+  $('#willowSheet').classList.remove('show');
+  $('#docMenu').classList.remove('show');
+  $('#orderSheet').classList.remove('show');
+  sheetOpen=null;
+}
+function openSign(){closeSheets();showScrim();$('#signSheet').classList.add('show');sheetOpen='sign';}
+function openDocMenu(){closeSheets();showScrim();$('#docMenu').classList.add('show');icons();sheetOpen='menu';}
+function openOrder(){closeSheets();showScrim();$('#orderSheet').classList.add('show');icons();sheetOpen='order';}
+function openWillow(scope){
+  closeSheets();showScrim();$('#willowSheet').classList.add('show');sheetOpen='willow';
+  const sc=$('#wlwScope'),chips=$('#wlwChips'),open=$('#wlwOpen');
+  // reset thread
+  document.querySelectorAll('#chat .bubble:not(#wlwOpen)').forEach(b=>b.remove());
+  if(scope==='doc'){
+    sc.textContent='Asking about: Closing Disclosure';
+    open.textContent="I've read this Closing Disclosure. Here's what stands out — ask away.";
+    chips.innerHTML='<div class="chip" onclick="askWillow(\'Explain the $4,200 credit on line 12\')">Explain the $4,200 credit</div><div class="chip" onclick="askWillow(\'What is my cash to close?\')">Cash to close?</div><div class="chip" onclick="askWillow(\'Summarize this disclosure\')">Summarize</div>';
+  }else{
+    sc.textContent='Asking about all documents';
+    open.textContent="Hi Kira — I've read your documents. Ask me anything, or tap a question below.";
+    chips.innerHTML='<div class="chip" onclick="askWillow(\'What did I buy 12 Oak Avenue for?\')">What did I buy 12 Oak for?</div><div class="chip" onclick="askWillow(\'Which documents still need my signature?\')">What still needs signing?</div><div class="chip" onclick="askWillow(\'Summarize everything for 220 Pine St\')">Summarize 220 Pine St</div>';
+  }
+  icons();
+}
+const answers={
+  "What did I buy 12 Oak Avenue for?":"You purchased 12 Oak Avenue for $740,000, with a $22,000 earnest deposit. Closing is targeted for Aug 1, 2026.",
+  "Which documents still need my signature?":"Two: the Purchase Agreement (due Jun 29) and the Lead-Based Paint Disclosure (due Jul 1) — both for 12 Oak Avenue.",
+  "Explain the $4,200 credit on line 12":"Line 12 is a seller credit of $4,200 toward your closing costs — it lowers the cash you bring to closing by that amount."
+};
+function askWillow(q){
+  if(!q)return;
+  const chat=$('#chat');
+  chat.insertAdjacentHTML('beforeend',`<div class="bubble me">${q}</div>`);
+  $('#askIn').value='';
+  setTimeout(()=>{
+    const a=answers[q]||"Here's what I found across your documents — tap any source to open the original.";
+    chat.insertAdjacentHTML('beforeend',`<div class="bubble w">${a}</div>`);
+    $('.sheet.show .sheet-body').scrollTop=9999;
+  },420);
+}
+function doSign(){closeSheets();toast('Opening envelope in DocuSign…');}
+
+function toast(m){$('#toastMsg').textContent=m;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200);}
+
+/* voice: long-press fab */
+const fab=$('#fab');let pressTimer=null,longPressed=false;
+function startPress(e){longPressed=false;pressTimer=setTimeout(()=>{longPressed=true;showVoice();},480);}
+function endPress(e){clearTimeout(pressTimer);if(!longPressed){openWillow('all');}}
+fab.addEventListener('mousedown',startPress);fab.addEventListener('touchstart',startPress,{passive:true});
+fab.addEventListener('mouseup',endPress);fab.addEventListener('touchend',endPress);
+fab.addEventListener('mouseleave',()=>clearTimeout(pressTimer));
+function showVoice(){closeSheets();$('#voiceTip').style.display='none';$('#voice').classList.add('show');icons();}
+function hideVoice(){$('#voice').classList.remove('show');}
+
+/* first-session tip auto-hide */
+setTimeout(()=>{const t=$('#voiceTip');if(t)t.style.display='none';},6000);
+</script>
+</body>
+</html>

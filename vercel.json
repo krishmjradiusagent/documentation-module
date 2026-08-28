@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/client-portal", "destination": "/Client Portal (web).dc.html" },
+    { "source": "/client-portal.html", "destination": "/Client Portal (web).dc.html" }
+  ]
+}

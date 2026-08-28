@@ -1,0 +1,11 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="24" cy="24" r="18" stroke="url(#melRing)" stroke-width="4"></circle>
+<defs>
+<linearGradient id="melRing" x1="10" y1="8" x2="38" y2="42" gradientUnits="userSpaceOnUse">
+<stop offset="0.06" stop-color="#7B7FF5"></stop>
+<stop offset="0.38" stop-color="#5A5FF2"></stop>
+<stop offset="0.78" stop-color="#F08068"></stop>
+<stop offset="1" stop-color="#F0A468"></stop>
+</linearGradient>
+</defs>
+</svg>

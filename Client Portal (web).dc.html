@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/radius-ui-design-system-c7220bb1-3534-4549-94e9-dd1c4d80b981/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/radius-ui-design-system-c7220bb1-3534-4549-94e9-dd1c4d80b981/tokens/colors.css">
+<link rel="stylesheet" href="_ds/radius-ui-design-system-c7220bb1-3534-4549-94e9-dd1c4d80b981/tokens/radius.css">
+<link rel="stylesheet" href="_ds/radius-ui-design-system-c7220bb1-3534-4549-94e9-dd1c4d80b981/tokens/spacing.css">
+<style>
+@keyframes rp-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.rp-lrow{transition:background .15s ease,border-color .15s ease}
+.rp-lrow[data-sel="false"]:hover{background:#FAFAFA}
+.rp-docrow{transition:background .15s ease}
+.rp-docrow:hover{background:#F5F5F5}
+.rp-acts{opacity:0;transition:opacity .15s ease}
+.rp-docrow:hover .rp-acts,.rp-acts:focus-within{opacity:1}
+.rp-iconbtn:hover{background:#EEEEFE!important;color:#5A5FF2!important}
+.rp-primary{transition:background .15s ease,transform .15s ease}
+.rp-primary:hover{background:#5155DA!important}
+.rp-primary:active{transform:scale(.98)}
+.rp-ghost:hover{background:#F5F5F5!important}
+.rp-sugrow:hover{background:#FAFAFA}
+.rp-chip:hover{background:#E1E1FC!important}
+.rp-askin::placeholder{color:#A78BC8}
+.rp-pillcta{transition:background .15s ease,transform .15s ease}
+.rp-pillcta:hover{background:#E1E1FC!important}
+.rp-pillcta:active{transform:scale(.97)}
+.rp-askdark::placeholder{color:#8B8B93}
+@keyframes rp-spin{to{transform:rotate(360deg)}}
+@keyframes rp-halo{0%,100%{box-shadow:0 0 0 0 rgba(123,127,245,.34),0 0 12px 0 rgba(240,128,104,.16)}50%{box-shadow:0 0 0 6px rgba(123,127,245,0),0 0 22px 3px rgba(240,128,104,.3)}}
+.rp-melchip{animation:rp-halo 2.8s ease-in-out infinite}
+.rp-melchip img{animation:rp-spin 7s linear infinite}
+@media (prefers-reduced-motion:reduce){.rp-melchip,.rp-melchip img{animation:none}}
+.rp-melsug:active{opacity:.7}
+@media (max-width:1180px){.rp-docsplit{grid-template-columns:minmax(0,1fr)!important}}
+@media (max-height:820px){.rp-melband{max-height:none}}
+html,body{margin:0;height:100%}
+body{background:#0A0A0A;font-family:Arial,Helvetica,sans-serif;color:#0A0A0A}
+*,*::before,*::after{box-sizing:border-box}
+button,input,select{font:inherit}
+a{color:#4F46E5;text-decoration:none}
+a:hover{color:#4338CA}
+.rp-scroll::-webkit-scrollbar{width:8px}
+.rp-scroll::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:8px}
+.rp-nav:hover{background:#27272A!important}
+.rp-pill:hover{background:#F8FAFC}
+.rp-card:hover{transform:translateY(-2px);box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)}
+.rp-card:hover .rp-arrows{opacity:1}
+.rp-tabs{display:none}
+@media (max-width:1100px){
+  .rp-split{grid-template-columns:minmax(0,1fr)!important}
+  .rp-pane[data-inactive="true"]{display:none!important}
+  .rp-tabs{display:flex!important}
+}
+</style>
+</helmet>
+
+<div style="display:flex;height:100vh;overflow:hidden;background:#0A0A0A;color:#FAFAFA">
+
+  <aside style="width:256px;flex-shrink:0;padding:8px;display:flex;flex-direction:column">
+    <div style="display:flex;flex-direction:column;flex:1;min-height:0;background:#18181B;border:1px solid #27272A;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.4)">
+
+      <div style="padding:12px 12px 4px">
+        <div style="position:relative;overflow:hidden;background:rgba(39,39,42,.5);border-radius:16px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+          <img src="public/avatar-ila.png" alt="Ila Corcoran" style="width:44px;height:44px;border-radius:9999px;object-fit:cover;border:2px solid rgba(39,39,42,.5);box-shadow:0 8px 12px -4px rgba(0,0,0,.5)">
+          <span style="font-size:14px;font-weight:700;letter-spacing:-.01em;color:#F4F4F5">Ila Corcoran</span>
+          <span style="font-size:12px;font-weight:600;color:rgba(244,244,245,.9);margin-top:-6px">Radius Agent</span>
+          <span style="font-size:10px;letter-spacing:.05em;font-weight:500;color:rgba(244,244,245,.7)">(562) 512-5806</span>
+        </div>
+      </div>
+
+      <div class="rp-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:4px 8px 8px">
+        <div style="height:28px;display:flex;align-items:center;padding:0 8px;font-size:11px;font-weight:600;letter-spacing:.04em;color:rgba(244,244,245,.5)">SEARCHES</div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <button class="rp-nav" onClick="{{ goSearch }}" style="{{ navSearch }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Search</span></button>
+          <button class="rp-nav" onClick="{{ goSaved }}" style="{{ navSaved }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg><span>My Searches</span></button>
+          <div style="display:flex;flex-direction:column;gap:0;padding:2px 0 4px 22px">
+            <button class="rp-nav" onClick="{{ goSaved }}" style="height:26px;display:flex;align-items:center;padding:0 8px;border:none;background:transparent;color:rgba(244,244,245,.6);font-size:12px;border-radius:8px;cursor:pointer;text-align:left">Downtown condo sweep</button>
+            <button class="rp-nav" onClick="{{ goSaved }}" style="height:26px;display:flex;align-items:center;padding:0 8px;border:none;background:transparent;color:rgba(244,244,245,.6);font-size:12px;border-radius:8px;cursor:pointer;text-align:left">Westlake family homes</button>
+          </div>
+          <button class="rp-nav" style="height:36px;display:flex;align-items:center;gap:8px;padding:0 8px;border:none;background:transparent;color:#F4F4F5;font-size:14px;border-radius:8px;cursor:pointer;text-align:left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg><span>Home Value</span></button>
+          <button class="rp-nav" style="height:36px;display:flex;align-items:center;gap:8px;padding:0 8px;border:none;background:transparent;color:#F4F4F5;font-size:14px;border-radius:8px;cursor:pointer;text-align:left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span>Messages</span></button>
+          <button class="rp-nav" onClick="{{ goDocs }}" style="{{ navDocs }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h6"></path><path d="M9 13h6"></path><path d="M9 17h6"></path></svg><span>Documents</span><span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9999px;background:#5A5FF2;color:#fff;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums">2</span></button>
+        </div>
+
+        <div style="height:28px;display:flex;align-items:center;padding:0 8px;margin-top:6px;font-size:11px;font-weight:600;letter-spacing:.04em;color:rgba(244,244,245,.5)">ENGAGEMENT</div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <button class="rp-nav" onClick="{{ goInterested }}" style="{{ navInterested }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg><span>Interested</span><span style="margin-left:auto;font-size:12px;font-variant-numeric:tabular-nums;color:rgba(244,244,245,.5)">{{ interestedCount }}</span></button>
+          <button class="rp-nav" onClick="{{ goNotInterested }}" style="{{ navNot }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg><span>Not Interested</span><span style="margin-left:auto;font-size:12px;font-variant-numeric:tabular-nums;color:rgba(244,244,245,.5)">{{ notCount }}</span></button>
+          <button class="rp-nav" onClick="{{ goRecent }}" style="{{ navRecent }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v5h5"></path><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"></path><path d="M12 7v5l4 2"></path></svg><span>Recently Viewed</span><span style="margin-left:auto;font-size:12px;font-variant-numeric:tabular-nums;color:rgba(244,244,245,.5)">{{ recentCount }}</span></button>
+        </div>
+
+        <div style="height:28px;display:flex;align-items:center;padding:0 8px;margin-top:6px;font-size:11px;font-weight:600;letter-spacing:.04em;color:rgba(244,244,245,.5)">MORE</div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <button class="rp-nav" style="height:36px;display:flex;align-items:center;gap:8px;padding:0 8px;border:none;background:transparent;color:#F4F4F5;font-size:14px;border-radius:8px;cursor:pointer;text-align:left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span>My Profile</span></button>
+          <button class="rp-nav" style="height:36px;display:flex;align-items:center;gap:8px;padding:0 8px;border:none;background:transparent;color:#F4F4F5;font-size:14px;border-radius:8px;cursor:pointer;text-align:left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg><span>Settings</span></button>
+          <button class="rp-nav" style="height:36px;display:flex;align-items:center;gap:8px;padding:0 8px;border:none;background:transparent;color:#F4F4F5;font-size:14px;border-radius:8px;cursor:pointer;text-align:left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path></svg><span>Logout</span></button>
+        </div>
+      </div>
+
+      <div style="padding:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #27272A">
+        <div style="display:flex;flex-direction:column;font-size:10px;color:#A1A1AA">
+          <span style="font-weight:500;color:#F4F4F5">ilia@radiusagent.com</span>
+          <span>License #01383148</span>
+        </div>
+        <button style="height:32px;width:32px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;color:#A1A1AA;border-radius:8px;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M9 3v18"></path><path d="m16 15-3-3 3-3"></path></svg></button>
+      </div>
+    </div>
+  </aside>
+
+  <main style="position:relative;flex:1;min-width:0;display:flex;flex-direction:column;background:#FFFFFF;color:#0A0A0A;margin:8px 8px 8px 0;border-radius:12px;overflow:hidden;border:1px solid #27272A">
+
+    <sc-if value="{{ showSearch }}" hint-placeholder-val="{{ true }}">
+    <div style="flex-shrink:0;background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <div style="padding:12px 16px;border-bottom:1px solid #E5E7EB">
+        <div style="position:relative;width:100%">
+          <div style="position:absolute;top:0;bottom:0;left:16px;display:flex;align-items:center;color:#94A3B8;pointer-events:none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          </div>
+          <input value="{{ location }}" onChange="{{ onLocation }}" placeholder="Search neighborhoods, schools, address" style="height:44px;width:100%;padding:0 16px 0 44px;border:1px solid #E2E8F0;border-radius:12px;background:rgba(248,250,252,.5);font-size:14px;color:#0A0A0A;box-shadow:0 1px 2px rgba(0,0,0,.05);outline:none">
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;min-height:56px;padding:8px 16px;background:#FFFFFF">
+        <div style="display:flex;align-items:center;gap:12px;flex:0 0 auto">
+          <h1 style="margin:0;font-size:16px;font-weight:600;letter-spacing:-.01em;white-space:nowrap">{{ pageTitle }}</h1>
+          <div style="width:1px;height:20px;background:#E2E8F0"></div>
+          <span style="font-size:14px;color:#64748B;white-space:nowrap">Showing {{ visibleCount }} of {{ totalCount }} listings</span>
+        </div>
+
+        <div class="rp-scroll" style="display:flex;align-items:center;gap:8px;margin-left:auto;flex:1 1 auto;min-width:0;overflow-x:auto;padding:4px 0">
+          <button class="rp-pill" style="display:inline-flex;height:36px;align-items:center;gap:8px;border-radius:9999px;border:1px solid #E2E8F0;background:#fff;padding:0 12px;font-size:14px;font-weight:500;color:#0F172A;box-shadow:0 1px 2px rgba(0,0,0,.05);white-space:nowrap;cursor:pointer">For sale</button>
+          <button class="rp-pill" onClick="{{ cyclePrice }}" style="{{ pricePill }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><span>{{ priceLabel }}</span></button>
+          <button class="rp-pill" onClick="{{ cycleBeds }}" style="{{ bedsPill }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 4v16"></path><path d="M2 8h18a2 2 0 0 1 2 2v10"></path><path d="M2 17h20"></path><path d="M6 8v9"></path></svg><span>{{ bedsLabel }}</span></button>
+          <button class="rp-pill" onClick="{{ cycleType }}" style="{{ typePill }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg><span>{{ typeLabel }}</span></button>
+          <button class="rp-pill" style="display:inline-flex;height:36px;align-items:center;gap:8px;border-radius:9999px;border:1px solid #E2E8F0;background:#fff;padding:0 12px;font-size:14px;font-weight:500;color:#0F172A;box-shadow:0 1px 2px rgba(0,0,0,.05);white-space:nowrap;cursor:pointer"><span>More filters</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+          <button style="display:inline-flex;height:36px;align-items:center;gap:8px;border-radius:9999px;border:none;background:transparent;padding:0 16px;font-size:14px;font-weight:600;color:#2563EB;cursor:pointer;white-space:nowrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path></svg>Save search</button>
+          <div style="width:1px;height:32px;background:#E2E8F0"></div>
+          <button class="rp-pill" onClick="{{ cycleSort }}" style="display:inline-flex;height:36px;align-items:center;gap:8px;border-radius:9999px;border:1px solid #E2E8F0;background:#fff;padding:0 12px;font-size:14px;font-weight:500;color:#0F172A;box-shadow:0 1px 2px rgba(0,0,0,.05);white-space:nowrap;cursor:pointer">{{ sortLabel }}</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rp-tabs" style="flex-shrink:0;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #E5E7EB;background:#fff">
+      <div style="display:flex;flex:1;gap:4px;height:44px;padding:4px;border-radius:9999px;background:#F1F5F9">
+        <button onClick="{{ showList }}" style="{{ listTab }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg>List</button>
+        <button onClick="{{ showMap }}" style="{{ mapTab }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 18.5 6 21V7l6-2.5"></path><path d="m12 4.5 6 2.5v14l-6-2.5"></path></svg>Map</button>
+      </div>
+    </div>
+
+    <section class="rp-split" style="display:grid;grid-template-columns:minmax(0,720px) minmax(0,1fr);flex:1;min-height:0;overflow:hidden">
+
+        <div class="rp-scroll rp-pane" data-inactive="{{ listInactive }}" style="height:100%;min-height:0;overflow-y:auto;background:#F8FAFC;padding-bottom:88px">
+        <div style="padding:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+          <sc-for list="{{ list }}" as="p" hint-placeholder-count="4">
+            <div class="rp-card" style="overflow:hidden;border:1px solid rgba(226,232,240,.6);border-radius:24px;background:#fff;box-shadow:0 1px 2px -1px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.1);transition:transform .2s ease,box-shadow .2s ease;animation:rp-in .22s ease-out">
+              <div style="position:relative;width:100%;height:192px;overflow:hidden;background:#F8FAFC">
+                <div role="img" aria-label="{{ p.address }}" onClick="{{ p.open }}" style="{{ p.imgStyle }}"></div>
+                <div style="position:absolute;left:12px;right:12px;top:12px;display:flex;align-items:center;gap:6px">
+                  <sc-if value="{{ p.signal }}" hint-placeholder-val="{{ true }}">
+                    <span style="{{ p.signalStyle }}">{{ p.signal }}</span>
+                  </sc-if>
+                  <span style="{{ p.mlsStyle }}">{{ p.mls }}</span>
+                  <span style="margin-left:auto;display:inline-flex;align-items:center;gap:4px;background:#E6F8F1;color:#00A36C;border-radius:9999px;padding:2px 8px;font-size:10px;font-weight:700">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
+                    {{ p.matchScore }}%
+                  </span>
+                </div>
+                <div style="position:absolute;bottom:12px;right:12px">
+                  <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.95);border-radius:9999px;padding:6px 12px;font-size:14px;font-weight:700;color:#4F46E5;box-shadow:0 1px 2px rgba(0,0,0,.08)">{{ p.priceLabel }}</span>
+                </div>
+              </div>
+
+              <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+                <h3 style="margin:0;font-size:17px;font-weight:800;line-height:1.2;color:#0F172A">{{ p.address }}</h3>
+                <div style="display:flex;align-items:center;gap:16px;font-size:13px;font-weight:500;color:#64748B">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"><path d="M2 4v16"></path><path d="M2 8h18a2 2 0 0 1 2 2v10"></path><path d="M2 17h20"></path><path d="M6 8v9"></path></svg>
+                    <span><span style="color:#0F172A;font-weight:700">{{ p.beds }}</span> bd</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.7 3 4 3.7 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5H4"></path><path d="M10 5 8 7"></path></svg>
+                    <span><span style="color:#0F172A;font-weight:700">{{ p.baths }}</span> ba</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>
+                    <span><span style="color:#0F172A;font-weight:700">{{ p.sqftLabel }}</span> sqft</span>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <button onClick="{{ p.like }}" style="{{ p.likeStyle }}">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="{{ p.heartFill }}" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                    Interested
+                  </button>
+                  <button onClick="{{ p.dislike }}" style="{{ p.dislikeStyle }}">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="margin:0 16px 16px;border:1px dashed #CBD5E1;border-radius:14px;background:#fff;padding:40px;text-align:center">
+            <div style="margin:0 auto;height:48px;width:48px;display:flex;align-items:center;justify-content:center;border-radius:9999px;background:#F1F5F9;color:#64748B">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="transform:rotate(90deg)"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+            <div style="margin-top:12px;font-size:14px;font-weight:500;color:#0F172A">No homes here</div>
+            <div style="margin-top:4px;font-size:14px;color:#64748B">Adjust filters or save a new search.</div>
+          </div>
+        </sc-if>
+      </div>
+
+      <div class="rp-pane" data-inactive="{{ mapInactive }}" style="position:relative;height:100%;min-height:0;overflow:hidden;border-left:1px solid #E5E7EB;background:#F1F5F9">
+        <div style="position:absolute;inset:0;background-image:url('public/map-screenshot.png');background-size:cover;background-position:center;background-repeat:no-repeat">
+
+          <div class="rp-scroll" style="position:absolute;left:16px;top:16px;z-index:20;display:flex;align-items:center;gap:8px">
+            <button class="rp-pill" style="display:inline-flex;height:36px;align-items:center;gap:8px;border-radius:9999px;border:1px solid #E2E8F0;background:#fff;padding:0 12px;font-size:14px;font-weight:500;color:#0F172A;box-shadow:0 1px 2px rgba(0,0,0,.05);cursor:pointer;white-space:nowrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 18.5 6 21V7l6-2.5"></path><path d="m12 4.5 6 2.5v14l-6-2.5"></path><circle cx="12" cy="10" r="3"></circle></svg>All areas</button>
+            <button class="rp-pill" style="display:inline-flex;height:36px;align-items:center;gap:8px;border-radius:9999px;border:1px solid #E2E8F0;background:#fff;padding:0 12px;font-size:14px;font-weight:500;color:#0F172A;box-shadow:0 1px 2px rgba(0,0,0,.05);cursor:pointer;white-space:nowrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m12 2 9 5-9 5-9-5z"></path><path d="m3 12 9 5 9-5"></path><path d="m3 17 9 5 9-5"></path></svg>Standard</button>
+            <button class="rp-pill" onClick="{{ toggleDraw }}" style="{{ drawPill }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21.2 4.8a2.7 2.7 0 0 0-3.8-3.8L3 15.4V21h5.6z"></path></svg>{{ drawLabel }}</button>
+          </div>
+
+          <sc-if value="{{ boundary }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:18%;top:18%;height:46%;width:38%;border-radius:36px;border:2px dashed #94A3B8;background:rgba(15,23,42,.05);box-shadow:0 0 0 9999px rgba(15,23,42,.06);pointer-events:none"></div>
+          </sc-if>
+
+          <sc-for list="{{ markers }}" as="m" hint-placeholder-count="6">
+            <button onClick="{{ m.open }}" style="{{ m.wrapStyle }}">
+              <div style="display:flex;flex-direction:column;align-items:center;transform:translate(-50%,-50%)">
+                <div style="{{ m.pinStyle }}">{{ m.label }}</div>
+                <div style="margin-top:4px;height:8px;width:8px;border-radius:9999px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)"></div>
+              </div>
+            </button>
+          </sc-for>
+
+          <div style="position:absolute;bottom:110px;left:24px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.85);backdrop-filter:blur(6px);border-radius:16px;padding:16px;box-shadow:0 20px 25px -5px rgba(0,0,0,.12)">
+            <div style="font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.2em;color:#64748B">Search state</div>
+            <div style="margin-top:4px;font-size:14px;font-weight:600;color:#0F172A">Custom boundary map</div>
+            <div style="margin-top:4px;font-size:12px;color:#64748B">{{ boundaryLabel }}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </sc-if>
+
+    <sc-if value="{{ showDocs }}" hint-placeholder-val="{{ false }}">
+    <div style="position:relative;display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;background:#FFFFFF;font-family:'Mona Sans',system-ui,-apple-system,sans-serif;color:#0A0A0A">
+
+      <div style="flex:none;padding:20px 24px 14px;border-bottom:1px solid #E5E5E5">
+        <div style="display:flex;align-items:flex-start;gap:24px">
+          <div style="flex:1;min-width:0">
+            <h1 style="margin:0;font-family:'Hubot Sans','Mona Sans',sans-serif;font-size:24px;font-weight:600;line-height:32px;letter-spacing:-.025em">Documents</h1>
+            <div style="display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:4px">
+              <span style="font-size:13px;line-height:18px;color:#737373;white-space:nowrap">1 envelope to sign · 1 upload requested</span>
+            </div>
+          </div>
+          <div style="position:relative;flex:none;width:320px">
+            <div style="position:absolute;left:12px;top:0;bottom:0;display:flex;align-items:center;color:#737373;pointer-events:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></div>
+            <input value="{{ docQuery }}" onChange="{{ onDocQuery }}" placeholder="Search your documents" style="height:40px;width:100%;padding:0 12px 0 36px;border:1px solid #E5E5E5;border-radius:8px;background:#fff;font-size:14px;color:#0A0A0A;box-shadow:0 1px 2px rgba(0,0,0,.05);outline:none">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="rp-scroll" style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column">
+      <sc-if value="{{ browsing }}" hint-placeholder-val="{{ true }}">
+        <div class="rp-melband" style="flex:none;padding:16px 24px 18px;border-bottom:1px solid #E5E5E5;background:#FAFAFA">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin:0 2px 10px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <img src="public/mel-ring.svg" alt="" width="18" height="18" style="flex:none;display:block">
+              <h2 style="margin:0;font-size:15px;font-weight:600;letter-spacing:-.01em;background:linear-gradient(120deg,#7B7FF5 6%,#5A5FF2 38%,#F08068 78%,#F0A468 100%);-webkit-background-clip:text;background-clip:text;color:transparent">Mel suggests</h2>
+              <span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:9999px;background:rgba(240,128,104,.16);border:1px solid rgba(240,128,104,.32);color:#B44420;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums">5</span>
+            </div>
+            <span style="font-size: 12px; color: #737373; display: none">Sign or upload to keep things moving</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(186px,1fr));gap:12px">
+            <sc-for list="{{ needs }}" as="n" hint-placeholder-count="5">
+              <div class="rp-lrow" data-sel="false" onClick="{{ n.select }}" style="display:flex;flex-direction:column;padding:10px;border:1px solid #E5E5E5;border-radius:14px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06);cursor:pointer">
+                <div style="position:relative;height:96px;border-radius:10px;border:1px solid #E5E5E5;background:#F5F5F5;padding:12px 10px;overflow:hidden">
+                  <i style="display:block;height:4px;width:85%;border-radius:2px;background:#E5E5E5;margin-bottom:6px"></i>
+                  <i style="display:block;height:4px;width:60%;border-radius:2px;background:#E5E5E5;margin-bottom:6px"></i>
+                  <i style="display:block;height:4px;width:85%;border-radius:2px;background:#E5E5E5;margin-bottom:6px"></i>
+                  <i style="display:block;height:4px;width:40%;border-radius:2px;background:#E5E5E5"></i>
+                  <span style="{{ n.dueStyle }}">{{ n.due }}</span>
+                  <button onClick="{{ n.act }}" style="{{ n.actStyle }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="{{ n.actIcon }}"></path></svg>{{ n.actLabel }}</button>
+                </div>
+                <div style="font-size:13px;font-weight:600;line-height:1.3;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ n.name }}</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:5px;font-size:12px;color:#737373">
+                  <span style="flex:none;width:22px;height:22px;border-radius:9999px;background:#F5F5F5;color:#0A0A0A;font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:center">{{ n.ini }}</span>
+                  <span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ n.prop }}</span>
+                  <span style="flex:none;display:inline-flex;align-items:center;gap:3px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h6"></path></svg>{{ n.docCount }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <div class="rp-docsplit" style="display:grid;grid-template-columns:360px minmax(0,1fr);flex:1 1 auto;min-height:420px;overflow:hidden">
+
+        <div class="rp-scroll" style="height:100%;min-height:0;overflow-y:auto;border-right:1px solid #E5E5E5;background:#FAFAFA;padding:18px 16px 100px">
+          <sc-if value="{{ searching }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin:0 2px 10px">
+              <h2 style="margin:0;font-size:15px;font-weight:600;letter-spacing:-.01em">Search results</h2>
+              <span style="font-size:12px;color:#737373">{{ resultCount }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ results }}" as="r" hint-placeholder-count="3">
+                <div class="rp-lrow" data-sel="false" onClick="{{ r.open }}" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid #E5E5E5;border-radius:10px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.05);cursor:pointer">
+                  <span style="flex:none;width:28px;height:34px;border-radius:6px;border:1px solid #E5E5E5;background:#F5F5F5;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:0 5px"><i style="display:block;height:2px;border-radius:2px;background:#D4D4D4"></i><i style="display:block;height:2px;width:70%;border-radius:2px;background:#E5E5E5"></i><i style="display:block;height:2px;border-radius:2px;background:#E5E5E5"></i></span>
+                  <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</span><span style="font-size:12px;color:#737373;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.sub }}</span></span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"></path></svg>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+              <div style="text-align:center;padding:28px 12px">
+                <p style="margin:0 0 14px;font-size:13px;color:#737373">No documents match “{{ docQuery }}”</p>
+                <button onClick="{{ openMelAll }}" style="display:inline-flex;padding:1px;border:none;border-radius:11px;background:linear-gradient(120deg,#7B7FF5,#5A5FF2,#F08068,#F0A468);cursor:pointer"><span style="display:flex;align-items:center;gap:8px;padding:9px 15px;border-radius:10px;background:#fff;font-family:inherit;font-size:13px;font-weight:600"><img src="public/mel-icon.svg" alt="" width="15" height="15" style="flex:none;display:block"><span style="background:linear-gradient(90deg,#5A5FF2,#F08068);-webkit-background-clip:text;background-clip:text;color:transparent">Ask Mel instead</span></span></button>
+              </div>
+            </sc-if>
+          </sc-if>
+
+          <sc-if value="{{ browsing }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin:0 2px 10px">
+              <h2 style="margin:0;font-size:15px;font-weight:600;letter-spacing:-.01em">By property</h2>
+              <button onClick="{{ allProps }}" style="border:none;background:transparent;padding:0;font-family:inherit;font-size:13px;font-weight:600;color:#5A5FF2;cursor:pointer">2 properties</button>
+            </div>
+            <div style="border:1px solid #E5E5E5;border-radius:14px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:0 14px">
+              <sc-for list="{{ propRows }}" as="p" hint-placeholder-count="2">
+                <div style="{{ p.wrapStyle }}">
+                  <div class="rp-lrow" data-sel="{{ p.sel }}" onClick="{{ p.select }}" style="{{ p.rowStyle }}">
+                    <span style="{{ p.imgStyle }}"></span>
+                    <span style="flex:1;min-width:0">
+                      <span style="display:flex;align-items:center;gap:8px"><span style="flex:1;min-width:0;font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.addr }}</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"></path></svg></span>
+                      <span style="display:flex;align-items:center;gap:8px;margin-top:5px;font-size:12px;color:#737373">
+                        <span style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>{{ p.mailCount }}</span>
+                        <span style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h6"></path></svg>{{ p.docCount }}</span>
+                        <i style="width:1px;height:10px;background:#E5E5E5"></i>
+                        <span style="padding:2px 8px;border-radius:6px;background:#EFF0FE;color:#3730A3;font-size:11px;font-weight:600">{{ p.role }}</span>
+                      </span>
+                    </span>
+                  </div>
+                  <sc-for list="{{ p.envRows }}" as="er" hint-placeholder-count="1">
+                    <div class="rp-lrow" data-sel="false" onClick="{{ er.open }}" style="position:relative;display:flex;align-items:center;gap:10px;padding:12px 0 12px 14px;border-top:1px solid #E5E5E5;cursor:pointer">
+                      <i style="{{ er.barStyle }}"></i>
+                      <span style="flex:1;min-width:0">
+                        <span style="display:block;font-size:14px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ er.title }}</span>
+                        <span style="display:flex;align-items:center;gap:8px;margin-top:5px;font-size:12px;color:#737373"><span style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h6"></path></svg>{{ er.docCount }}</span><span style="{{ er.pillStyle }}">{{ er.pill }}</span></span>
+                      </span>
+                      <span style="flex:none;display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#737373;white-space:nowrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg>{{ er.date }}</span>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ p.hasFoot }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 0 14px">
+                      <span style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;color:#C2410C"><i style="width:6px;height:6px;border-radius:9999px;background:#EA580C"></i>{{ p.foot }}</span>
+                      <span style="font-size:12px;color:#737373;white-space:nowrap">{{ p.footWhen }}</span>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <div class="rp-scroll" onClick="{{ closeMenus }}" style="height:100%;min-height:0;overflow-y:auto;background:#fff">
+          <sc-if value="{{ viewerOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid #E5E5E5;position:sticky;top:0;background:#fff;z-index:5">
+              <button onClick="{{ closeViewer }}" class="rp-ghost" style="flex:none;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #E5E5E5;border-radius:10px;background:#fff;color:#0A0A0A;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg></button>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:16px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ viewerName }}</div>
+                <div style="font-size:12px;color:#737373">{{ viewerSub }}</div>
+              </div>
+              <button onClick="{{ download }}" class="rp-ghost" style="display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border:1px solid #E5E5E5;border-radius:10px;background:#fff;color:#0A0A0A;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg>Download</button>
+              <button onClick="{{ openMelDoc }}" style="display:inline-flex;flex:none;padding:1px;border:none;border-radius:11px;background:linear-gradient(120deg,#7B7FF5,#5A5FF2,#F08068,#F0A468);cursor:pointer"><span style="display:flex;align-items:center;gap:8px;height:32px;padding:0 14px;border-radius:10px;background:#fff;font-family:inherit;font-size:13px;font-weight:600"><img src="public/mel-icon.svg" alt="" width="15" height="15" style="flex:none;display:block"><span style="background:linear-gradient(90deg,#5A5FF2,#F08068);-webkit-background-clip:text;background-clip:text;color:transparent">Ask Mel</span></span></button>
+            </div>
+            <div style="padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px;background:#FAFAFA;min-height:100%">
+              <div style="width:100%;max-width:740px;background:#fff;border:1px solid #E5E5E5;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:44px 56px">
+                <div style="font-size:15px;font-weight:700;text-align:center">{{ viewerName }}</div>
+                <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#A3A3A3;text-align:center;margin-top:6px">Final · page 1 of 5</div>
+                <div style="display:flex;flex-direction:column;gap:10px;margin-top:26px">
+                  <i style="display:block;height:9px;border-radius:2px;background:#F0F0F3;width:80%"></i><i style="display:block;height:9px;border-radius:2px;background:#F0F0F3"></i><i style="display:block;height:9px;border-radius:2px;background:#F0F0F3;width:55%"></i><i style="display:block;height:9px;border-radius:2px;background:#F0F0F3"></i><i style="display:block;height:9px;border-radius:2px;background:#F0F0F3;width:80%"></i><i style="display:block;height:9px;border-radius:2px;background:#F0F0F3"></i><i style="display:block;height:9px;border-radius:2px;background:#F0F0F3;width:55%"></i><i style="display:block;height:9px;border-radius:2px;background:#F0F0F3;width:80%"></i>
+                </div>
+              </div>
+              <div style="width:100%;max-width:740px;background:#fff;border:1px solid #E5E5E5;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:44px 56px;opacity:.5">
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <i style="display:block;height:9px;border-radius:2px;background:#F0F0F3"></i><i style="display:block;height:9px;border-radius:2px;background:#F0F0F3;width:80%"></i><i style="display:block;height:9px;border-radius:2px;background:#F0F0F3;width:55%"></i>
+                </div>
+              </div>
+              <div style="position:sticky;bottom:0;width:100%;max-width:740px;background:#fff;border:1px solid #E3DEFB;border-radius:14px;box-shadow:0 10px 30px rgba(80,70,180,.14);padding:14px 16px">
+                <div style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:#5A5FF2;margin-bottom:10px"><img src="public/mel-icon.svg" alt="" width="14" height="14" style="flex:none;display:block">Mel · this document</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <sc-for list="{{ dockChips }}" as="c" hint-placeholder-count="3">
+                    <button onClick="{{ c.ask }}" class="rp-chip" style="border:none;background:#EEEEFE;color:#5A5FF2;font-family:inherit;font-size:12px;font-weight:600;padding:8px 12px;border-radius:10px;cursor:pointer">{{ c.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ detailOpen }}" hint-placeholder-val="{{ true }}">
+            <div style="position:relative;display:flex;align-items:center;gap:14px;padding:18px 24px;border-bottom:1px solid #E5E5E5">
+              <div style="{{ detail.imgStyle }}"></div>
+              <div style="flex:1;min-width:0">
+                <div style="font-family:'Hubot Sans','Mona Sans',sans-serif;font-size:20px;font-weight:700;letter-spacing:-.025em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ detail.addr }}</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:4px;font-size:13px;color:#737373">
+                  <span>{{ detail.role }}</span><span>·</span><b style="font-weight:700;color:#0A0A0A;font-variant-numeric:tabular-nums">{{ detail.price }}</b><span>·</span><b style="font-weight:700;color:#0A0A0A">{{ detail.close }}</b>
+                </div>
+              </div>
+              <button onClick="{{ toggleInsight }}" style="{{ insightBtn }}"><span style="flex:none;width:24px;height:24px;border-radius:9999px;background:rgba(234,88,12,.1);color:#C2410C;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path></svg></span>Mel insight<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" style="{{ insightChev }}"><path d="m6 9 6 6 6-6"></path></svg></button>
+
+              <sc-if value="{{ insightOpen }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ stop }}" style="position:absolute;right:24px;top:78px;z-index:40;width:400px;max-width:calc(100% - 48px);padding:16px;border:1px solid #DEDEFB;border-radius:14px;background:#F7F7FE;box-shadow:0 12px 28px -10px rgba(10,10,10,.22);animation:rp-in .18s ease-out">
+                  <div style="display:flex;align-items:flex-start;gap:12px">
+                    <span style="flex:none;width:32px;height:32px;border-radius:9999px;background:rgba(234,88,12,.1);color:#C2410C;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path></svg></span>
+                    <div style="flex:1;min-width:0">
+                      <p style="margin:0;font-size:15px;font-weight:500;letter-spacing:-.02em;line-height:1.35;text-wrap:pretty">{{ detail.insA }}<em style="font-style:normal;font-weight:600;color:#3730A3">{{ detail.insEm }}</em>{{ detail.insB }}</p>
+                      <p style="margin:5px 0 0;font-size:13px;line-height:1.45;color:#737373;text-wrap:pretty">{{ detail.insD }}</p>
+                    </div>
+                    <button onClick="{{ closeInsight }}" aria-label="Close insight" style="flex:none;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border:none;border-radius:9999px;background:rgba(255,255,255,.7);color:#525252;cursor:pointer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:4px;margin:20px 24px 4px;padding:4px;background:#F5F5F5;border-radius:10px;max-width:520px">
+              <button onClick="{{ goLive }}" style="{{ tabLive }}"><span style="position:relative">In progress<sc-if value="{{ liveDot }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;top:-1px;right:-9px;width:6px;height:6px;border-radius:9999px;background:#5A5FF2"></span></sc-if></span></button>
+              <button onClick="{{ goDone }}" style="{{ tabDone }}">Completed</button>
+              <button onClick="{{ goAct }}" style="{{ tabAct }}">Activity</button>
+            </div>
+
+            <div style="padding:12px 24px 110px;display:flex;flex-direction:column;gap:12px">
+              <sc-if value="{{ hasDocList }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:14px;font-weight:600;margin:2px 2px 0">Completed documents</div>
+                <div style="border:1px solid #E5E5E5;border-radius:14px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:0 14px">
+                  <sc-for list="{{ docList }}" as="d" hint-placeholder-count="2">
+                    <div class="rp-docrow" onClick="{{ d.open }}" style="{{ d.rowStyle }}">
+                      <span style="flex:1;min-width:0"><span style="display:block;font-size:15px;font-weight:600;line-height:1.3">{{ d.name }}</span><span style="display:block;font-size:12.5px;color:#737373;margin-top:3px">{{ d.meta }}</span></span>
+                      <button onClick="{{ d.download }}" class="rp-iconbtn" aria-label="Download document" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;border-radius:8px;background:transparent;color:#737373;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg></button>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ showEnvLabel }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:14px;font-weight:600;margin:8px 2px 0">Completed envelopes</div>
+              </sc-if>
+              <sc-for list="{{ envs }}" as="e" hint-placeholder-count="2">
+                <div style="border:1px solid #E5E5E5;border-radius:14px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden">
+                  <div class="rp-lrow" data-sel="false" onClick="{{ e.toggle }}" style="position:relative;display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer">
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ e.title }}</div>
+                      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:5px;font-size:13px;color:#737373">
+                        <sc-if value="{{ e.isAction }}" hint-placeholder-val="{{ true }}">
+                          <button onClick="{{ e.sign }}" class="rp-pillcta" style="{{ e.pillBtnStyle }}"><i style="{{ e.dotStyle }}"></i>{{ e.statusLabel }}<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+                        </sc-if>
+                        <sc-if value="{{ e.isPassive }}" hint-placeholder-val="{{ false }}">
+                          <span style="{{ e.statusStyle }}"><i style="{{ e.dotStyle }}"></i>{{ e.statusLabel }}</span>
+                        </sc-if>
+                        <span>{{ e.meta }}</span>
+                      </div>
+                    </div>
+                    <span style="flex:none;font-size:12.5px;font-weight:500;color:#737373;white-space:nowrap">{{ e.when }}</span>
+                    <button onClick="{{ e.menu }}" class="rp-iconbtn" aria-label="Envelope options" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;border-radius:8px;background:transparent;color:#737373;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button>
+                    <sc-if value="{{ e.menuOpen }}" hint-placeholder-val="{{ false }}">
+                      <div onClick="{{ stop }}" style="position:absolute;right:14px;top:56px;z-index:25;width:210px;padding:6px;border:1px solid #E5E5E5;border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.14)">
+                        <button onClick="{{ e.sign }}" class="rp-ghost" style="display:flex;align-items:center;gap:10px;width:100%;height:36px;padding:0 10px;border:none;border-radius:8px;background:transparent;font-family:inherit;font-size:13px;font-weight:500;color:#0A0A0A;cursor:pointer;text-align:left"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path></svg>Review &amp; sign</button>
+                        <button onClick="{{ e.dlAll }}" class="rp-ghost" style="display:flex;align-items:center;gap:10px;width:100%;height:36px;padding:0 10px;border:none;border-radius:8px;background:transparent;font-family:inherit;font-size:13px;font-weight:500;color:#0A0A0A;cursor:pointer;text-align:left"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg>Download all</button>
+                      </div>
+                    </sc-if>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" style="{{ e.chev }}"><path d="m6 9 6 6 6-6"></path></svg>
+                  </div>
+                  <sc-if value="{{ e.open }}" hint-placeholder-val="{{ true }}">
+                    <div style="border-top:1px solid #E5E5E5;padding:8px 12px 14px">
+                      <div style="font-size:12px;font-weight:600;color:#737373;padding:8px 6px 4px">In this envelope</div>
+                      <sc-for list="{{ e.docs }}" as="d" hint-placeholder-count="3">
+                        <div class="rp-docrow" onClick="{{ d.open }}" style="{{ d.rowStyle }}">
+                          <span style="flex:none;width:36px;height:36px;border-radius:10px;background:#F5F5F5;border:1px solid #E5E5E5;display:flex;align-items:center;justify-content:center;color:#737373"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h6"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg></span>
+                          <span style="flex:1;min-width:0"><span style="display:block;font-size:14px;font-weight:500;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.name }}</span><span style="display:block;font-size:12.5px;color:#737373;margin-top:2px">{{ d.meta }}</span></span>
+                          <button onClick="{{ d.menu }}" class="rp-iconbtn" aria-label="More actions" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;border-radius:8px;background:transparent;color:#737373;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button>
+                          <sc-if value="{{ d.menuOpen }}" hint-placeholder-val="{{ false }}">
+                            <div onClick="{{ stop }}" style="position:absolute;right:8px;top:46px;z-index:20;width:210px;padding:6px;border:1px solid #E5E5E5;border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.14)">
+                              <button onClick="{{ d.view }}" class="rp-ghost" style="display:flex;align-items:center;gap:10px;width:100%;height:36px;padding:0 10px;border:none;border-radius:8px;background:transparent;font-family:inherit;font-size:13px;font-weight:500;color:#0A0A0A;cursor:pointer;text-align:left"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>View document</button>
+                              <button onClick="{{ d.download }}" class="rp-ghost" style="display:flex;align-items:center;gap:10px;width:100%;height:36px;padding:0 10px;border:none;border-radius:8px;background:transparent;font-family:inherit;font-size:13px;font-weight:500;color:#0A0A0A;cursor:pointer;text-align:left"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg>Download</button>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+
+              <sc-for list="{{ reqs }}" as="r" hint-placeholder-count="1">
+                <div style="border:1px solid #E5E5E5;border-radius:14px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:16px 18px">
+                  <div style="display:flex;align-items:flex-start;gap:12px">
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:15px;font-weight:600;letter-spacing:-.01em">{{ r.name }}</div>
+                      <div style="font-size:13px;color:#737373;margin-top:2px">{{ r.meta }}</div>
+                    </div>
+                    <span style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:6px;background:#FEF1EC;color:#C2410C;font-size:12px;font-weight:600">Upload requested</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;margin-top:12px">
+                    <button onClick="{{ r.upload }}" class="rp-primary" style="display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border:none;border-radius:10px;background:#5A5FF2;color:#fff;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(90,95,242,.28)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m17 8-5-5-5 5"></path><path d="M12 3v12"></path></svg>Upload</button>
+                    <span style="font-size:12px;color:#737373">{{ r.when }}</span>
+                  </div>
+                </div>
+              </sc-for>
+
+              <sc-for list="{{ feed }}" as="g" hint-placeholder-count="0">
+                <div>
+                  <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#A3A3A3;margin:6px 2px 8px">{{ g.day }}</div>
+                  <div style="display:flex;flex-direction:column;gap:8px">
+                    <sc-for list="{{ g.items }}" as="a" hint-placeholder-count="2">
+                      <div style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid #E5E5E5;border-radius:14px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.05)">
+                        <span style="{{ a.icStyle }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="{{ a.icPath }}"></path></svg></span>
+                        <div style="flex:1;min-width:0">
+                          <div style="font-size:14px;font-weight:500;line-height:1.3">{{ a.title }}</div>
+                          <div style="display:flex;align-items:center;gap:8px;margin-top:5px;font-size:12px;color:#737373"><span>{{ a.when }}</span><span style="padding:2px 8px;border:1px solid #E5E5E5;border-radius:6px">{{ a.env }}</span></div>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+
+              <sc-if value="{{ emptyShow }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:48px 24px;border:1px dashed #E5E5E5;border-radius:14px;background:#FAFAFA;text-align:center">
+                  <span style="width:44px;height:44px;border-radius:9999px;background:#F5F5F5;color:#737373;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg></span>
+                  <span style="font-size:14px;font-weight:600;margin-top:6px">{{ emptyTitle }}</span>
+                  <span style="font-size:13px;color:#737373;max-width:320px">{{ emptyDesc }}</span>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      </div>
+
+      <sc-if value="{{ melOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;top:0;right:0;bottom:0;width:400px;background:#fff;border-left:1px solid #E5E5E5;box-shadow:-12px 0 32px rgba(10,10,10,.1);z-index:55;display:flex;flex-direction:column;animation:rp-in .2s ease-out">
+          <div style="display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid #E5E5E5">
+            <span style="flex:none;width:36px;height:36px;border-radius:11px;padding:1px;background:linear-gradient(120deg,#7B7FF5,#5A5FF2,#F08068,#F0A468);display:flex"><span style="flex:1;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center"><img src="public/mel-icon.svg" alt="" width="20" height="20" style="flex:none;display:block"></span></span>
+            <div style="flex:1;min-width:0"><div style="font-size:16px;font-weight:700;letter-spacing:-.02em">Mel</div><div style="font-size:12px;color:#737373;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ melScope }}</div></div>
+            <button onClick="{{ closeMel }}" class="rp-ghost" aria-label="Close Mel" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #E5E5E5;border-radius:9999px;background:#F5F5F5;color:#171717;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+          </div>
+          <div class="rp-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+            <sc-if value="{{ briefShow }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:16px;border:1px solid #E5E5E5;border-radius:14px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+              <div style="display:flex;align-items:center;gap:7px">
+                <img src="public/mel-icon.svg" alt="" width="15" height="15" style="flex:none;display:block">
+                <span style="font-size:13px;font-weight:600;background:linear-gradient(90deg,#5A5FF2,#F08068);-webkit-background-clip:text;background-clip:text;color:transparent">Envelope brief</span>
+              </div>
+              <div style="font-size:17px;font-weight:700;letter-spacing:-.02em;margin-top:10px;text-wrap:pretty">{{ brief.title }}</div>
+              <p style="margin:8px 0 0;font-size:13.5px;line-height:1.5;color:#737373;text-wrap:pretty">{{ brief.body }}</p>
+              <div style="margin-top:14px">
+                <sc-for list="{{ brief.kvs }}" as="k" hint-placeholder-count="3">
+                  <div style="{{ k.rowStyle }}"><span style="color:#737373">{{ k.k }}</span><b style="font-weight:700;text-align:right">{{ k.v }}</b></div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="font-size:13px;color:#737373;margin:6px 2px 0">{{ brief.scopeLabel }}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ melScopeChips }}" as="c" hint-placeholder-count="3">
+                <button onClick="{{ c.pick }}" style="{{ c.style }}"><sc-if value="{{ c.icon }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h6"></path></svg></sc-if>{{ c.label }}</button>
+              </sc-for>
+            </div>
+            </sc-if>
+
+            <sc-for list="{{ melMsgs }}" as="m" hint-placeholder-count="1">
+              <div style="{{ m.style }}">{{ m.text }}</div>
+            </sc-for>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px">
+              <sc-for list="{{ melChips }}" as="c" hint-placeholder-count="3">
+                <button onClick="{{ c.ask }}" class="rp-chip" style="border:none;background:#EEEEFE;color:#5A5FF2;font-family:inherit;font-size:12.5px;font-weight:600;padding:9px 13px;border-radius:9999px;cursor:pointer">{{ c.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="flex:none;padding:14px 18px 18px;border-top:1px solid #E5E5E5">
+            <div style="padding:1px;border-radius:12px;background:linear-gradient(90deg,#B9BBF8,#F3C0AE)">
+              <div style="display:flex;align-items:center;gap:10px;border-radius:11px;background:#fff;padding:11px 13px">
+                <input class="rp-askin" value="{{ melDraft }}" onChange="{{ onMelDraft }}" onKeyDown="{{ onMelKey }}" placeholder="Ask Mel…" style="flex:1;min-width:0;border:none;outline:none;background:transparent;font-size:14px;color:#0A0A0A">
+                <button onClick="{{ sendMel }}" aria-label="Send" style="flex:none;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:none;border-radius:8px;background:#5A5FF2;color:#fff;cursor:pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m22 2-7 20-4-9-9-4z"></path></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ signOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeSign }}" style="position:absolute;inset:0;z-index:60;background:rgba(10,10,10,.5);display:flex;align-items:center;justify-content:center;padding:32px">
+          <div onClick="{{ stop }}" style="width:100%;max-width:620px;max-height:100%;display:flex;flex-direction:column;background:#fff;border-radius:14px;box-shadow:0 24px 48px -12px rgba(0,0,0,.35);overflow:hidden;animation:rp-in .2s ease-out">
+            <div style="display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid #E5E5E5">
+              <span style="flex:none;width:34px;height:34px;border-radius:10px;background:#EEEEFE;color:#5A5FF2;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg></span>
+              <div style="flex:1;min-width:0"><div style="font-size:16px;font-weight:700;letter-spacing:-.02em">12 Oak Avenue, Unit 4B</div><div style="font-size:12px;color:#737373">Signing envelope · 3 documents</div></div>
+              <button onClick="{{ closeSign }}" class="rp-ghost" aria-label="Close" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #E5E5E5;border-radius:9999px;background:#F5F5F5;color:#171717;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+            </div>
+
+            <div class="rp-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:18px 22px">
+              <div style="padding:16px;border:1px solid #DEDEFB;border-radius:14px;background:#F7F7FE">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="flex:none;width:32px;height:32px;border-radius:9999px;background:rgba(234,88,12,.1);color:#C2410C;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path></svg></span>
+                  <span style="font-size:16px;font-weight:700;letter-spacing:-.02em">The gist</span>
+                </div>
+                <p style="margin:12px 0 0;font-size:13.5px;line-height:1.55;color:#525252;text-wrap:pretty">This envelope finalizes your purchase of <b style="color:#0A0A0A">12 Oak Avenue for $740,000</b>. It locks your price, sets a <b style="color:#0A0A0A">$22,000 earnest deposit</b>, and gives you until <b style="color:#0A0A0A">Jul 14</b> for inspection. Closing is targeted for <b style="color:#0A0A0A">Aug 1</b>.</p>
+              </div>
+
+              <div style="font-size:13px;color:#737373;margin:18px 2px 6px">In this envelope</div>
+              <sc-for list="{{ signDocs }}" as="d" hint-placeholder-count="3">
+                <div class="rp-docrow" onClick="{{ d.open }}" style="display:flex;align-items:center;gap:12px;padding:10px 6px;border-radius:10px;cursor:pointer">
+                  <span style="flex:none;width:36px;height:36px;border-radius:10px;background:#F5F5F5;border:1px solid #E5E5E5;display:flex;align-items:center;justify-content:center;color:#737373"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h6"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg></span>
+                  <span style="flex:1;min-width:0"><span style="display:block;font-size:14.5px;font-weight:600">{{ d.name }}</span><span style="display:block;font-size:12.5px;color:#737373;margin-top:2px">{{ d.meta }}</span></span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"></path></svg>
+                </div>
+              </sc-for>
+
+              <div style="margin-top:14px">
+                <sc-for list="{{ signKvs }}" as="k" hint-placeholder-count="3">
+                  <div style="display:flex;justify-content:space-between;font-size:13.5px;padding:12px 2px;border-bottom:1px solid #E5E5E5"><span style="color:#737373">{{ k.k }}</span><b style="font-weight:700;font-variant-numeric:tabular-nums">{{ k.v }}</b></div>
+                </sc-for>
+                <div class="rp-lrow" data-sel="false" onClick="{{ toggleSO }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 2px;border-radius:8px;cursor:pointer">
+                  <span style="font-size:13.5px;color:#737373">Signers</span>
+                  <span style="display:flex;align-items:center;gap:8px">
+                    <span style="display:flex;align-items:center">
+                      <sc-for list="{{ soRows }}" as="s" hint-placeholder-count="4">
+                        <span style="{{ s.stackStyle }}">{{ s.ini }}</span>
+                      </sc-for>
+                    </span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" style="{{ soChev }}"><path d="m6 9 6 6 6-6"></path></svg>
+                  </span>
+                </div>
+                <sc-if value="{{ soOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-top:1px solid #E5E5E5;padding:4px 2px 2px">
+                    <sc-for list="{{ soRows }}" as="s" hint-placeholder-count="4">
+                      <div style="display:flex;align-items:center;gap:11px;padding:9px 0">
+                        <span style="width:10px;text-align:center;font-size:11px;font-weight:700;color:#A3A3A3">{{ s.num }}</span>
+                        <span style="{{ s.avStyle }}">{{ s.ini }}</span>
+                        <span style="flex:1;min-width:0"><span style="display:block;font-size:13px;font-weight:600;line-height:1.2">{{ s.name }}</span><span style="display:block;font-size:12px;color:#737373">{{ s.role }}</span></span>
+                        <span style="{{ s.tagStyle }}">{{ s.tag }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div style="display:flex;gap:9px;font-size:12.5px;line-height:1.45;color:#92600A;background:#FDEED2;padding:12px 14px;border-radius:10px;margin-top:16px">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex:none;margin-top:1px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                Mel gives you the gist — not legal advice. Check anything unclear with your agent before you sign.
+              </div>
+            </div>
+
+            <div style="flex:none;padding:14px 22px 18px;border-top:1px solid #E5E5E5;display:flex;gap:10px">
+              <button onClick="{{ openMelDoc }}" style="flex:none;padding:1px;border:none;border-radius:14px;background:linear-gradient(120deg,#7B7FF5,#5A5FF2,#F08068,#F0A468);cursor:pointer"><span style="display:flex;align-items:center;gap:8px;height:50px;padding:0 20px;border-radius:13px;background:#fff"><img src="public/mel-icon.svg" alt="" width="18" height="18" style="flex:none;display:block"><span style="font-size:15px;font-weight:600;background:linear-gradient(90deg,#5A5FF2,#F08068);-webkit-background-clip:text;background-clip:text;color:transparent">Ask Mel</span></span></button>
+              <button onClick="{{ signNow }}" class="rp-primary" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;border:none;border-radius:14px;background:#5A5FF2;color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 6px 18px rgba(90,95,242,.28)">Sign with Docusign</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:8px;padding:12px 18px;border-radius:10px;background:#6DA544;color:#fff;font-size:13px;font-weight:600;box-shadow:0 10px 24px rgba(0,0,0,.18);animation:rp-in .2s ease-out">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"></path></svg>{{ toastMsg }}
+        </div>
+      </sc-if>
+    </div>
+    </sc-if>
+    <div style="position:absolute;left:0;right:0;bottom:0;z-index:45;padding:14px 16px;display:flex;align-items:center;gap:8px;background:#0A0A0A;border-top:1px solid #27272A">
+      <div style="flex:1;min-width:0;display:flex;align-items:center;gap:12px;height:56px;padding:0 8px 0 9px;border:1px solid #27272A;border-radius:9999px;background:#131316">
+        <span class="rp-melchip" style="flex:none;width:38px;height:38px;border-radius:9999px;display:flex;align-items:center;justify-content:center;background:#1F1F23;border:1px solid #2E2E33"><img src="public/mel-ring.svg" alt="Mel" width="22" height="22" style="display:block"></span>
+        <button onClick="{{ attach }}" aria-label="Attach a file" style="flex:none;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #2E2E33;border-radius:9999px;background:#1F1F23;color:#A1A1AA;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21.4 11.05 12.25 20.2a6 6 0 0 1-8.49-8.49l8.57-8.57a4 4 0 0 1 5.66 5.66l-8.58 8.57a2 2 0 0 1-2.83-2.83l7.87-7.86"></path></svg></button>
+        <input class="rp-askdark" value="{{ barDraft }}" onChange="{{ onBarDraft }}" onKeyDown="{{ onBarKey }}" placeholder="{{ askPlaceholder }}" style="flex:1;min-width:0;border:none;outline:none;background:transparent;font-family:'Mona Sans',system-ui,sans-serif;font-size:15px;color:#FAFAFA">
+        <button onClick="{{ sendBar }}" aria-label="Send to Mel" style="flex:none;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:none;border-radius:9999px;background:#3F3F46;color:#FAFAFA;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m22 2-7 20-4-9-9-4z"></path></svg></button>
+      </div>
+      <button onClick="{{ barMore }}" aria-label="More options" style="flex:none;width:32px;height:44px;display:flex;align-items:center;justify-content:center;border:none;border-radius:10px;background:transparent;color:#A1A1AA;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="12" cy="19" r="1.6"></circle></svg></button>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+const IMG = {
+  a: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop",
+  b: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop",
+  c: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=800&auto=format&fit=crop",
+  d: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=800&auto=format&fit=crop"
+};
+
+const DATA = [
+  { id: "prop-1", address: "2101 S Congress Ave", area: "South Congress", price: 895000, beds: 3, baths: 2, sqft: 1824, listedDate: "2024-05-01", matchScore: 96, isNew: true, mlsStatus: "ACT", type: "Townhome", img: IMG.a, markerTop: "38%", markerLeft: "52%" },
+  { id: "prop-2", address: "4208 Hyde Park Rd", area: "Hyde Park", price: 1140000, beds: 4, baths: 3, sqft: 2460, listedDate: "2024-04-15", matchScore: 93, hasPriceCut: true, mlsStatus: "ACT", type: "House", img: IMG.b, markerTop: "42%", markerLeft: "60%" },
+  { id: "prop-3", address: "4683 Glenalbyn Drive", area: "Mt Washington", price: 1795000, beds: 3, baths: 3, sqft: 2189, listedDate: "2024-05-02", matchScore: 98, mlsStatus: "CS", type: "House", img: IMG.c, markerTop: "40%", markerLeft: "48%" },
+  { id: "prop-4", address: "3507 Cazador Street", area: "Glassell Park", price: 875000, beds: 2, baths: 1, sqft: 1058, listedDate: "2024-05-03", matchScore: 89, mlsStatus: "AC", type: "House", img: IMG.d, markerTop: "46%", markerLeft: "42%" },
+  { id: "prop-5", address: "1205 E 7th St", area: "East Austin", price: 645000, beds: 2, baths: 2, sqft: 1150, listedDate: "2024-05-04", matchScore: 92, mlsStatus: "PND", type: "Condo", img: IMG.a, markerTop: "44%", markerLeft: "58%" },
+  { id: "prop-6", address: "702 Wlake Dr", area: "Westlake", price: 2450000, beds: 5, baths: 4, sqft: 4200, listedDate: "2024-04-20", matchScore: 85, isNew: true, mlsStatus: "CS", type: "House", img: IMG.b, markerTop: "35%", markerLeft: "45%" },
+  { id: "prop-7", address: "1502 Mueller Blvd", area: "Mueller", price: 925000, beds: 3, baths: 3, sqft: 2100, listedDate: "2024-05-05", matchScore: 97, isNew: true, mlsStatus: "ACT", type: "House", img: IMG.c, markerTop: "41%", markerLeft: "55%" },
+  { id: "prop-8", address: "804 Congress Ave", area: "Downtown Austin", price: 1250000, beds: 2, baths: 2, sqft: 1450, listedDate: "2024-05-02", matchScore: 94, hasPriceCut: true, mlsStatus: "ACT", type: "Condo", img: IMG.d, markerTop: "43%", markerLeft: "51%" }
+];
+
+const MLS = { ACT: "ACTIVE", ACTIVE: "ACTIVE", CS: "COMING SOON", AUC: "UNDER CONTRACT", AC: "UNDER CONTRACT", PND: "PENDING", PENDING: "PENDING", CLOSED: "SOLD" };
+const MLS_COLORS = {
+  "ACTIVE": ["#ECFDF5", "#047857", "#A7F3D0"],
+  "COMING SOON": ["#EFF6FF", "#1D4ED8", "#BFDBFE"],
+  "UNDER CONTRACT": ["#FFFBEB", "#92400E", "#FDE68A"],
+  "PENDING": ["#F5F3FF", "#6D28D9", "#DDD6FE"],
+  "SOLD": ["#F1F5F9", "#334155", "#E2E8F0"]
+};
+const SORTS = [
+  { value: "default", label: "Recent Status/Price Changes" },
+  { value: "newest", label: "Newest On Site" },
+  { value: "price-asc", label: "Lowest Price" },
+  { value: "price-desc", label: "Highest Price" }
+];
+const PRICE_STEPS = [
+  { label: "Price", min: 0, max: 5000000 },
+  { label: "Under $750K", min: 0, max: 750000 },
+  { label: "Under $1M", min: 0, max: 1000000 },
+  { label: "$1M–$2M", min: 1000000, max: 2000000 },
+  { label: "$2M+", min: 2000000, max: 5000000 }
+];
+const BED_STEPS = ["Any", "2+", "3+", "4+"];
+const TYPE_STEPS = ["Any", "House", "Condo", "Townhome"];
+
+const PILL = "display:inline-flex;height:36px;align-items:center;gap:8px;border-radius:9999px;border:1px solid #E2E8F0;background:#fff;padding:0 12px;font-size:14px;font-weight:500;color:#0F172A;box-shadow:0 1px 2px rgba(0,0,0,.05);white-space:nowrap;cursor:pointer";
+const PILL_ON = "display:inline-flex;height:36px;align-items:center;gap:8px;border-radius:9999px;border:1px solid rgba(15,23,42,.3);background:rgba(15,23,42,.1);padding:0 12px;font-size:14px;font-weight:500;color:#0F172A;box-shadow:0 1px 2px rgba(0,0,0,.05);white-space:nowrap;cursor:pointer";
+const NAV = "height:36px;display:flex;align-items:center;gap:8px;padding:0 8px;border:none;background:transparent;color:#F4F4F5;font-size:14px;border-radius:8px;cursor:pointer;text-align:left;width:100%";
+const NAV_ON = NAV.replace("background:transparent", "background:#27272A") + ";font-weight:600";
+const TAB = on => "flex:1;height:36px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:9999px;font-size:14px;font-weight:600;cursor:pointer;border:none;" +
+  (on ? "background:#fff;color:#0F172A;box-shadow:0 1px 2px rgba(0,0,0,.08)" : "background:transparent;color:#64748B");
+const BADGE = "display:inline-flex;align-items:center;padding:2px 10px;border-radius:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid";
+
+/* ── Documents module (ported from the mobile client app) ── */
+const DOC_PROPS = {
+  oak: {
+    id: "oak", addr: "12 Oak Ave, 4B", sub: "9 documents", role: "Buyer", status: "1 to sign",
+    img: "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=400",
+    insA: "Sign by ", insEm: "Fri, Jun 30", insB: " to hold Aug 1",
+    insD: "Yours is the last signature needed on the purchase envelope.",
+    rowDocs: "9 docs", mailCount: 2, docCountN: 9, price: "$740,000", close: "Closes Aug 1",
+    envRows: [{ title: "Purchase agreement + addenda", docCount: 3, pill: "Needs your signature", tone: "warn", date: "Jun 30" }],
+    envs: [
+      { title: "Purchase agreement + addenda", meta: "3 documents · sent Jun 24", state: "you", tone: "action", statusLabel: "Ready to sign", when: "Due Fri, Jun 30",
+        docs: [{ n: "Purchase Agreement", m: "14 pages · 2 signatures from you", badge: "Sign" }, { n: "Addenda", m: "3 pages", badge: "Sign" }, { n: "Lead-Based Paint Disclosure", m: "2 pages · 1 signature from you", badge: "Sign" }] },
+      { title: "Lender addendum", meta: "1 document · sent Jun 26", state: "others", tone: "wait", statusLabel: "Waiting on lender", when: "You signed Jun 26",
+        docs: [{ n: "Loan Estimate Addendum", m: "4 pages", badge: null }] },
+      { title: "Disclosure packet", meta: "5 documents · sent Jun 14", state: "done", tone: "ok", statusLabel: "Completed", when: "Completed Jun 21",
+        docs: [{ n: "Seller Property Questionnaire", m: "6 pages", badge: null }, { n: "Transfer Disclosure Statement", m: "9 pages", badge: null }] }
+    ],
+    requests: [],
+    done: [["Closing Disclosure", "Jun 18"], ["Home Inspection Report", "Jun 15"]],
+    act: [
+      { day: "Today", items: [
+        { ty: "view", t: "Seller opened the Purchase Agreement", w: "1h ago", env: "Purchase agreement + addenda" },
+        { ty: "sent", t: "Your agent sent the lender addendum to Peak Lending", w: "4h ago", env: "Lender addendum" }] },
+      { day: "Earlier", items: [
+        { ty: "sign", t: "You signed the lender addendum", w: "Jun 26", env: "Lender addendum" },
+        { ty: "done", t: "Disclosure packet completed by all 4 parties", w: "Jun 21", env: "Disclosure packet" }] }
+    ]
+  },
+  pine: {
+    id: "pine", addr: "220 Pine Street", sub: "1 document", role: "Buyer", status: "1 upload",
+    img: "https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=400",
+    insA: "Send proof of funds to keep the offer ", insEm: "on track", insB: "",
+    insD: "Your agent asked for a recent bank statement or lender letter. Nothing is signed on this property yet.",
+    rowDocs: "1 doc", mailCount: 1, docCountN: 1, price: "Offer out", close: "1 upload requested",
+    envRows: [], foot: "1 document requested from you", footWhen: "Asked Jun 26",
+    envs: [],
+    requests: [{ n: "Proof of funds", m: "Requested by your agent", when: "Asked Jun 26" }],
+    done: [],
+    act: [{ day: "Earlier", items: [{ ty: "req", t: "Your agent requested Proof of Funds", w: "Jun 26", env: "Upload request" }] }]
+  }
+};
+
+const DOC_NEEDS = [
+  { name: "12 Oak Avenue", prop: "Biju A", ini: "BA", docCount: 3, due: "Due today", dueTone: "today", act: "sign", propId: "oak" },
+  { name: "Proof of Funds", prop: "220 Pine St", ini: "BA", docCount: 1, due: "Requested", dueTone: "flat", act: "upload", propId: "pine" },
+  { name: "Homeowners Insurance Advisory", prop: "12 Oak Avenue", ini: "BA", docCount: 1, due: "Due Jun 30", dueTone: "flat", act: "sign", propId: "oak" },
+  { name: "Photo ID", prop: "220 Pine St", ini: "BA", docCount: 1, due: "Requested", dueTone: "flat", act: "upload", propId: "pine" },
+  { name: "Wire Fraud Advisory", prop: "12 Oak Avenue", ini: "BA", docCount: 1, due: "Due Jul 2", dueTone: "flat", act: "sign", propId: "oak" }
+];
+
+const DOC_INDEX = [
+  { n: "Purchase Agreement", p: "12 Oak Avenue", env: true },
+  { n: "Lead-Based Paint Disclosure", p: "12 Oak Avenue", env: true },
+  { n: "Buyer Disclosure", p: "12 Oak Avenue", env: true },
+  { n: "Closing Disclosure", p: "12 Oak Avenue" },
+  { n: "Home Inspection Report", p: "12 Oak Avenue" },
+  { n: "Proof of Funds", p: "220 Pine Street" }
+];
+
+const MEL_ANS = {
+  "What did I buy 12 Oak Avenue for?": "You purchased 12 Oak Avenue for $740,000, with a $22,000 earnest deposit. Closing is targeted for Aug 1, 2026.",
+  "Which documents still need my signature?": "One envelope: 12 Oak Avenue, Unit 4B — Purchase Agreement, Lead-Based Paint Disclosure and Buyer Disclosure. You are second of four signers.",
+  "Explain the $4,200 credit on line 12": "Line 12 is a seller credit of $4,200 toward your closing costs — it lowers the cash you bring to closing by that amount.",
+  "What is my cash to close?": "About $178,400 — your down payment and closing costs, less the $22,000 earnest money already on deposit and the $4,200 seller credit.",
+  "Summarize this document": "In short: this is the final settlement statement for 12 Oak Avenue. It confirms the $740,000 price, a $4,200 seller credit, and cash to close of about $178,400.",
+  "What am I agreeing to?": "You're agreeing to buy 12 Oak Avenue for $740,000, with a $22,000 earnest deposit and inspection open until Jul 14. Closing is targeted for Aug 1.",
+  "Which need my signature?": "Two of the three: Purchase Agreement (2 signatures) and Lead-Based Paint Disclosure (1 signature). Buyer Disclosure only needs your initials.",
+  "What if I miss Jun 30?": "Jun 30 is the date your agent set to keep the Aug 1 closing. Missing it doesn't void the deal, but the seller can ask to move the closing date."
+};
+
+const ENV_TONES = {
+  action: ["#EEEEFE", "#3730A3", "#5A5FF2"],
+  wait: ["#F5F5F5", "#525252", "#A3A3A3"],
+  ok: ["#EFF6E8", "#166534", "#6DA544"]
+};
+const ACT_ICONS = {
+  view: ["M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z", "#E7EEFE", "#2563EB"],
+  sent: ["m22 2-7 20-4-9-9-4z", "#EEEEFE", "#4A4FE0"],
+  sign: ["M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z", "#FDEED2", "#7C4E06"],
+  done: ["M20 6 9 17l-5-5", "#EFF6E8", "#166534"],
+  req: ["M12 20V4m0 0-6 6m6-6 6 6", "#FEF1EC", "#C2410C"]
+};
+const ACT_ICON = { sign: "M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z", upload: "M12 20V4m0 0-6 6m6-6 6 6" };
+const DUE = {
+  today: "position:absolute;top:8px;right:8px;padding:4px 7px;border-radius:9999px;border:1px solid #F3DCAE;background:#FDEED2;color:#92600A;font-size:11px;font-weight:700;white-space:nowrap",
+  flat: "position:absolute;top:8px;right:8px;padding:4px 7px;border-radius:9999px;border:1px solid #E2E2E6;background:#F0F0F2;color:#6B6B74;font-size:11px;font-weight:700;white-space:nowrap"
+};
+const NEED_BTN = "position:absolute;bottom:8px;left:10px;right:10px;display:flex;align-items:center;justify-content:center;gap:5px;height:32px;border:none;border-radius:6px;background:#5A5FF2;color:#fff;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer";
+const SEG = on => "position:relative;flex:1;min-width:0;height:32px;display:inline-flex;align-items:center;justify-content:center;padding:0 8px;border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:500;line-height:1;cursor:pointer;white-space:nowrap;" +
+  (on ? "background:#fff;color:#0A0A0A;box-shadow:0 1px 2px rgba(0,0,0,.05)" : "background:transparent;color:#525252");
+const BUBBLE = me => "max-width:84%;padding:11px 13px;font-size:13px;line-height:1.5;border-radius:14px;" +
+  (me ? "align-self:flex-end;background:#0A0A0A;color:#fff;border-bottom-right-radius:5px" : "align-self:flex-start;background:#F5F5F5;color:#27272A;border-bottom-left-radius:5px");
+const AV = kind => "flex:none;width:28px;height:28px;border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;" +
+  (kind === "done" ? "background:#EFF6E8;color:#166534;border:1.5px solid #BFE6CD" :
+   kind === "now" ? "background:#5A5FF2;color:#fff;border:1.5px solid #5A5FF2" : "background:#F5F5F5;color:#A3A3A3;border:1.5px solid #E5E5E5");
+const SO_ROWS = [
+  { num: "1", ini: "ML", name: "Maria Lopez", role: "Buyer's agent", kind: "done", tag: "Signed · Jun 24" },
+  { num: "2", ini: "You", name: "You", role: "Buyer", kind: "now", tag: "Your turn" },
+  { num: "3", ini: "TR", name: "Tom Reed", role: "Seller's agent", kind: "wait", tag: "Waiting" },
+  { num: "4", ini: "JK", name: "James Kim", role: "Seller", kind: "wait", tag: "Waiting" }
+];
+const SIGN_DOCS = [
+  { name: "Purchase Agreement", meta: "14 pages · 2 signatures from you" },
+  { name: "Lead-Based Paint Disclosure", meta: "2 pages · 1 signature from you" },
+  { name: "Buyer Disclosure", meta: "3 pages · initials only" }
+];
+const SIGN_KVS = [
+  { k: "Purchase price", v: "$740,000" },
+  { k: "Earnest money", v: "$22,000" },
+  { k: "Inspection deadline", v: "Jul 14, 2026" }
+];
+const MEL_BRIEF = {
+  title: "Purchase agreement + addenda",
+  body: "Signing this locks your purchase of 12 Oak Avenue at $740,000. It sets your $22,000 earnest deposit and keeps inspection open until Jul 14.",
+  scopeLabel: "In this envelope · 3 documents",
+  kvs: [{ k: "In it", v: "3 documents · sent Jun 24" }, { k: "Signature needed from", v: "You" }, { k: "Timing", v: "Due Fri, Jun 30" }],
+  scopes: ["Whole envelope", "Purchase Agreement", "Addenda", "Lead-Based Paint Disclosure"]
+};
+
+class Component extends DCLogic {
+  state = {
+    route: (typeof location !== "undefined" && /documents/.test(location.hash)) ? "documents" : "search",
+    status: {},
+    viewed: [],
+    location: "All areas",
+    priceIdx: 0,
+    bedIdx: 0,
+    typeIdx: 0,
+    sortIdx: 0,
+    drawing: false,
+    boundary: false,
+    view: "map",
+    docProp: "oak",
+    docTab: "live",
+    docQuery: "",
+    sugOpen: false,
+    envOpen: {},
+    docMenu: null,
+    insightOpen: false,
+    melDoc: "Whole envelope",
+    signOpen: false,
+    soOpen: false,
+    melOpen: false,
+    melScope: "all",
+    melMsgs: [],
+    melDraft: "",
+    barDraft: "",
+    viewer: null,
+    toast: null
+  };
+
+  toast(msg) {
+    this.setState({ toast: msg });
+    clearTimeout(this._tt);
+    this._tt = setTimeout(() => this.setState({ toast: null }), 2400);
+  }
+
+  openMel(scope) {
+    this.setState({
+      melOpen: true, melScope: scope, melDraft: "", signOpen: false,
+      melMsgs: [{ me: false, text: scope === "doc"
+        ? "I've read all 3 documents in this envelope. Ask me anything, or start with one of these."
+        : "Hi Kira — I've read your documents. Ask me anything, or tap a question below." }]
+    });
+  }
+
+  ask(q) {
+    if (!q || !q.trim()) return;
+    const text = q.trim();
+    this.setState(s => ({
+      melOpen: true,
+      melDraft: "",
+      melMsgs: (s.melMsgs.length ? s.melMsgs : [{ me: false, text: "Hi Kira — I've read your documents. Ask me anything." }]).concat([{ me: true, text }])
+    }));
+    clearTimeout(this._at);
+    this._at = setTimeout(() => this.setState(s => ({
+      melMsgs: s.melMsgs.concat([{ me: false, text: MEL_ANS[text] || "Here's what I found across your documents — open any source to read the original." }])
+    })), 420);
+  }
+
+  askFromBar(q) {
+    if (!q || !q.trim()) return;
+    this.setState({ barDraft: "" });
+    if (this.state.route === "documents") { this.setState({ melScope: "all" }); this.ask(q); }
+    else this.toast("Mel is reading this search…");
+  }
+
+  viewDoc(name, sub) {
+    this.setState({ viewer: { name, sub }, signOpen: false });
+  }
+
+  docsVals() {
+    const st = this.state;
+    const p = DOC_PROPS[st.docProp] || DOC_PROPS.oak;
+    const q = st.docQuery.trim().toLowerCase();
+    const searching = q.length > 0;
+    const results = searching
+      ? DOC_INDEX.filter(d => d.n.toLowerCase().includes(q) || d.p.toLowerCase().includes(q)).map(d => ({
+          name: d.n, sub: d.p + (d.env ? " · in signing envelope" : ""),
+          open: () => this.viewDoc(d.n, d.p)
+        }))
+      : [];
+
+    const live = p.envs.filter(e => e.state !== "done");
+    const closed = p.envs.filter(e => e.state === "done");
+    const source = st.docTab === "done" ? closed : st.docTab === "live" ? live : [];
+    const envs = source.map((e, i) => {
+      const key = p.id + ":" + e.title;
+      const open = st.envOpen[key] === undefined ? e.state === "you" : st.envOpen[key];
+      const tone = ENV_TONES[e.tone] || ENV_TONES.wait;
+      const emk = "env:" + key;
+      return {
+        title: e.title, meta: e.meta, when: e.when, statusLabel: e.statusLabel, open,
+        isAction: e.state === "you",
+        isPassive: e.state !== "you",
+        chev: "flex:none;transition:transform .2s ease;transform:rotate(" + (open ? "180deg" : "0deg") + ")",
+        statusStyle: "display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:600;background:" + tone[0] + ";color:" + tone[1],
+        pillBtnStyle: "display:inline-flex;align-items:center;gap:6px;padding:5px 10px 5px 11px;border:none;border-radius:9999px;background:" + tone[0] + ";color:" + tone[1] + ";font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer",
+        dotStyle: "display:block;width:6px;height:6px;border-radius:9999px;background:" + tone[2],
+        menuOpen: st.docMenu === emk,
+        menu: ev => { ev.stopPropagation(); this.setState(s => ({ docMenu: s.docMenu === emk ? null : emk, insightOpen: false })); },
+        dlAll: ev => { ev.stopPropagation(); this.setState({ docMenu: null }); this.toast("Saved to your files"); },
+        toggle: () => this.setState(s => ({ envOpen: { ...s.envOpen, [key]: !(s.envOpen[key] === undefined ? e.state === "you" : s.envOpen[key]) }, docMenu: null })),
+        sign: ev => { ev.stopPropagation(); this.setState({ signOpen: true, docMenu: null }); },
+        mel: ev => { ev.stopPropagation(); this.openMel("doc"); },
+        docs: e.docs.map((d, di) => {
+          const mk = p.id + ":" + d.n;
+          const closeMenu = () => this.setState({ docMenu: null });
+          return {
+            name: d.n, meta: d.m,
+            rowStyle: "position:relative;display:flex;align-items:center;gap:12px;padding:10px 6px;border-radius:10px;cursor:pointer" + (di ? ";border-top:1px solid #F0F0F2" : ""),
+            menuOpen: st.docMenu === mk,
+            menu: ev => { ev.stopPropagation(); this.setState(s => ({ docMenu: s.docMenu === mk ? null : mk })); },
+            open: () => { closeMenu(); this.viewDoc(d.n, p.addr); },
+            view: ev => { ev.stopPropagation(); closeMenu(); this.viewDoc(d.n, p.addr); },
+            mel: ev => { ev.stopPropagation(); closeMenu(); this.openMel("doc"); },
+            download: ev => { ev.stopPropagation(); closeMenu(); this.toast("Saved to your files"); }
+          };
+        })
+      };
+    });
+
+    const reqs = st.docTab === "live" ? p.requests.map(r => ({
+      name: r.n, meta: r.m, when: r.when,
+      upload: () => this.toast("Upload requested — camera or files")
+    })) : [];
+
+    const docList = st.docTab === "done" ? p.done.map((d, i) => ({
+      name: d[0], meta: p.addr + " · " + d[1],
+      rowStyle: "display:flex;align-items:center;gap:12px;padding:15px 0;border-radius:10px;cursor:pointer" + (i ? ";border-top:1px solid #E5E5E5" : ""),
+      open: () => this.viewDoc(d[0], p.addr),
+      download: ev => { ev.stopPropagation(); this.toast("Saved to your files"); }
+    })) : [];
+
+    const feed = st.docTab === "act" ? p.act.map(g => ({
+      day: g.day,
+      items: g.items.map(a => {
+        const k = ACT_ICONS[a.ty] || ACT_ICONS.view;
+        return {
+          title: a.t, when: a.w, env: a.env, icPath: k[0],
+          icStyle: "flex:none;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:" + k[1] + ";color:" + k[2]
+        };
+      })
+    })) : [];
+
+    const empty = envs.length === 0 && reqs.length === 0 && docList.length === 0 && feed.length === 0;
+    const emptyCopy = st.docTab === "done"
+      ? ["Nothing completed yet", "Signed envelopes and finished documents move here."]
+      : st.docTab === "act"
+        ? ["No activity yet", "Signatures, views and requests on this property show up here."]
+        : ["Nothing in progress", "New envelopes and upload requests from your agent land here."];
+
+    const chip = (q2, label) => ({ label, ask: () => this.ask(q2) });
+
+    return {
+      showSearch: st.route !== "documents",
+      showDocs: st.route === "documents",
+      navDocs: st.route === "documents" ? NAV_ON : NAV,
+      goDocs: () => this.setState({ route: "documents" }),
+
+      sugOpen: st.sugOpen,
+      sugChev: "flex:none;transition:transform .22s ease;transform:rotate(" + (st.sugOpen ? "180deg" : "0deg") + ")",
+      toggleSug: () => this.setState(s => ({ sugOpen: !s.sugOpen })),
+      openSign: () => this.setState({ signOpen: true }),
+      closeSign: () => this.setState({ signOpen: false }),
+      signNow: () => { this.setState({ signOpen: false }); this.toast("Opening envelope in DocuSign…"); },
+      askUpload: () => this.toast("Upload requested — camera or files"),
+      stop: ev => ev.stopPropagation(),
+
+      docQuery: st.docQuery,
+      onDocQuery: ev => this.setState({ docQuery: ev.target.value, docMenu: null }),
+      searching,
+      browsing: !searching,
+      results,
+      resultCount: results.length + (results.length === 1 ? " document" : " documents"),
+      noResults: searching && results.length === 0,
+      openMelAll: () => this.openMel("all"),
+
+      needs: DOC_NEEDS.map(n => ({
+        name: n.name, prop: n.prop, due: n.due, ini: n.ini, docCount: n.docCount,
+        dueStyle: DUE[n.dueTone] || DUE.flat,
+        actLabel: n.act === "sign" ? "Sign" : "Upload",
+        actStyle: NEED_BTN,
+        actIcon: ACT_ICON[n.act],
+        select: () => this.setState({ docProp: n.propId, docTab: "live", viewer: null }),
+        act: ev => {
+          ev.stopPropagation();
+          if (n.act === "sign") this.setState({ docProp: n.propId, viewer: null, signOpen: true });
+          else this.toast("Upload requested — camera or files");
+        }
+      })),
+
+      allProps: () => this.toast("Showing all properties"),
+
+      propRows: Object.keys(DOC_PROPS).map((k, i) => {
+        const pr = DOC_PROPS[k];
+        const sel = st.docProp === k;
+        return {
+          addr: k === "oak" ? "12 Oak Avenue" : pr.addr,
+          mailCount: pr.mailCount, docCount: pr.docCountN, role: pr.role,
+          sel: sel ? "true" : "false",
+          wrapStyle: "display:flex;flex-direction:column" + (i ? ";border-top:1px solid #E5E5E5" : "") + (sel ? ";margin:6px -6px;padding:0 6px;border-radius:10px;background:#F5F5F5" : ""),
+          rowStyle: "display:flex;align-items:center;gap:12px;padding:14px 0;border-radius:10px;cursor:pointer",
+          imgStyle: "flex:none;width:48px;height:48px;border-radius:10px;border:1px solid #E5E5E5;background:#F5F5F5 center/cover no-repeat;background-image:url('" + pr.img + "')",
+          envRows: (pr.envRows || []).map(er => ({
+            title: er.title, docCount: er.docCount, pill: er.pill, date: er.date,
+            barStyle: "position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:2px;background:" + (er.tone === "warn" ? "#EA580C" : "#5A5FF2"),
+            pillStyle: "padding:3px 9px;border-radius:6px;font-size:11.5px;font-weight:600;" + (er.tone === "warn" ? "background:#FEF1EC;color:#C2410C" : "background:#EEEEFE;color:#3730A3"),
+            open: ev => { ev.stopPropagation(); this.setState({ docProp: k, docTab: "live", viewer: null, signOpen: true }); }
+          })),
+          hasFoot: !!pr.foot, foot: pr.foot || "", footWhen: pr.footWhen || "",
+          select: () => this.setState({ docProp: k, docTab: "live", viewer: null })
+        };
+      }),
+
+      detail: {
+        addr: p.addr, sub: p.sub, role: p.role, status: p.status,
+        price: p.price, close: p.close,
+        insA: p.insA, insEm: p.insEm, insB: p.insB, insD: p.insD,
+        imgStyle: "flex:none;width:56px;height:56px;border-radius:14px;border:1px solid #E5E5E5;background:#F5F5F5 center/cover no-repeat;background-image:url('" + p.img + "')"
+      },
+      detailOpen: !st.viewer,
+      viewerOpen: !!st.viewer,
+      viewerName: st.viewer ? st.viewer.name : "",
+      viewerSub: st.viewer ? (st.viewer.sub || p.addr) + " · Signed" : "",
+      closeViewer: () => this.setState({ viewer: null }),
+      download: () => this.toast("Saved to your files"),
+      openMelDoc: () => this.openMel("doc"),
+      dockChips: [chip("Summarize this document", "Summarize"), chip("Explain the $4,200 credit on line 12", "Explain line 12"), chip("What is my cash to close?", "Cash to close?")],
+
+      tabLive: SEG(st.docTab === "live"),
+      tabDone: SEG(st.docTab === "done"),
+      tabAct: SEG(st.docTab === "act"),
+      goLive: () => this.setState({ docTab: "live", docMenu: null }),
+      goDone: () => this.setState({ docTab: "done", docMenu: null }),
+      goAct: () => this.setState({ docTab: "act", docMenu: null }),
+      insightOpen: st.insightOpen,
+      insightChev: "flex:none;transition:transform .2s ease;transform:rotate(" + (st.insightOpen ? "180deg" : "0deg") + ")",
+      insightBtn: "flex:none;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 12px 0 6px;border-radius:9999px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;" +
+        (st.insightOpen ? "border:1px solid #C7C8F8;background:#F7F7FE;color:#3730A3" : "border:1px solid #E5E5E5;background:#fff;color:#0A0A0A"),
+      toggleInsight: ev => { ev.stopPropagation(); this.setState(s => ({ insightOpen: !s.insightOpen, docMenu: null })); },
+      closeInsight: ev => { ev.stopPropagation(); this.setState({ insightOpen: false }); },
+      closeMenus: () => { if (this.state.docMenu || this.state.insightOpen) this.setState({ docMenu: null, insightOpen: false }); },
+      liveDot: live.some(e => e.state === "you") || p.requests.length > 0,
+
+      envs, reqs, docList, feed,
+      hasDocList: docList.length > 0,
+      showEnvLabel: st.docTab === "done" && envs.length > 0,
+      emptyShow: empty,
+      emptyTitle: emptyCopy[0],
+      emptyDesc: emptyCopy[1],
+
+      melOpen: st.melOpen,
+      briefShow: st.melScope === "doc",
+      melScope: st.melScope === "doc" ? "Purchase agreement + addenda · 3 documents" : "Asking about all documents",
+      melMsgs: st.melMsgs.map(m => ({ text: m.text, style: BUBBLE(m.me) })),
+      melChips: st.melScope === "doc"
+        ? [chip("What am I agreeing to?", "What am I agreeing to?"), chip("Which need my signature?", "Which need my signature?"), chip("What if I miss Jun 30?", "What if I miss Jun 30?")]
+        : [chip("What did I buy 12 Oak Avenue for?", "What did I buy 12 Oak for?"), chip("Which documents still need my signature?", "What still needs signing?")],
+      brief: {
+        title: MEL_BRIEF.title, body: MEL_BRIEF.body, scopeLabel: MEL_BRIEF.scopeLabel,
+        kvs: MEL_BRIEF.kvs.map(k => ({ k: k.k, v: k.v, rowStyle: "display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:11px 0;border-top:1px solid #E5E5E5" }))
+      },
+      melScopeChips: MEL_BRIEF.scopes.map(sc => ({
+        label: sc, icon: sc !== "Whole envelope",
+        style: "display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:9999px;font-family:inherit;font-size:13px;cursor:pointer;" +
+          (st.melDoc === sc ? "border:1px solid transparent;background:#EEEEFE;color:#5A5FF2;font-weight:600" : "border:1px solid #E5E5E5;background:#fff;color:#0A0A0A;font-weight:500"),
+        pick: () => this.setState({ melDoc: sc })
+      })),
+      melDraft: st.melDraft,
+      onMelDraft: ev => this.setState({ melDraft: ev.target.value }),
+      onMelKey: ev => { if (ev.key === "Enter") this.ask(ev.target.value); },
+      sendMel: () => this.ask(this.state.melDraft),
+      closeMel: () => this.setState({ melOpen: false }),
+
+      signOpen: st.signOpen,
+      soOpen: st.soOpen,
+      soChev: "flex:none;transition:transform .2s ease;transform:rotate(" + (st.soOpen ? "180deg" : "0deg") + ")",
+      toggleSO: () => this.setState(s => ({ soOpen: !s.soOpen })),
+      soRows: SO_ROWS.map((r, i) => ({
+        num: r.num, ini: r.ini, name: r.name, role: r.role, tag: r.tag,
+        avStyle: AV(r.kind),
+        stackStyle: "flex:none;width:26px;height:26px;border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid #fff;" +
+          (i ? "margin-left:-7px;" : "") +
+          (r.kind === "done" ? "background:#EFF6E8;color:#166534" : r.kind === "now" ? "background:#5A5FF2;color:#fff" : "background:#F0F0F2;color:#8A8A93"),
+        tagStyle: "flex:none;font-size:11px;font-weight:600;white-space:nowrap;color:" + (r.kind === "done" ? "#166534" : r.kind === "now" ? "#5A5FF2" : "#A3A3A3")
+      })),
+      signDocs: SIGN_DOCS.map(d => ({ name: d.name, meta: d.meta, open: () => this.viewDoc(d.name, "12 Oak Avenue") })),
+      signKvs: SIGN_KVS,
+
+      toastOn: !!st.toast,
+      toastMsg: st.toast || "",
+      askPlaceholder: st.route === "documents" ? "Ask Mel about your documents…" : "Ask Mel about this search…",
+      barDraft: st.barDraft,
+      onBarDraft: ev => this.setState({ barDraft: ev.target.value }),
+      onBarKey: ev => { if (ev.key === "Enter") this.askFromBar(ev.target.value); },
+      sendBar: () => this.askFromBar(this.state.barDraft),
+      attach: () => this.toast("Attach a document — files or photos"),
+      barMore: () => this.toast("Voice, history and Mel settings")
+    };
+  }
+
+  statusOf(id) { return this.state.status[id] || "search"; }
+
+  base() {
+    const r = this.state.route;
+    if (r === "interested") return DATA.filter(p => this.statusOf(p.id) === "interested");
+    if (r === "not-interested") return DATA.filter(p => this.statusOf(p.id) === "notInterested");
+    if (r === "recently-viewed") return this.state.viewed.map(id => DATA.find(p => p.id === id)).filter(Boolean);
+    return DATA.filter(p => this.statusOf(p.id) === "search");
+  }
+
+  filtered() {
+    const price = PRICE_STEPS[this.state.priceIdx];
+    const bed = BED_STEPS[this.state.bedIdx];
+    const type = TYPE_STEPS[this.state.typeIdx];
+    const loc = this.state.location.toLowerCase();
+    const out = this.base().filter(p => {
+      if (p.price < price.min || p.price > price.max) return false;
+      if (bed !== "Any" && p.beds < Number(bed.replace("+", ""))) return false;
+      if (type !== "Any" && p.type !== type) return false;
+      if (this.state.location !== "All areas" && loc.trim() !== "" &&
+        !p.area.toLowerCase().includes(loc) && !p.address.toLowerCase().includes(loc)) return false;
+      return true;
+    });
+    const s = SORTS[this.state.sortIdx].value;
+    if (s === "price-asc") return [...out].sort((a, b) => a.price - b.price);
+    if (s === "price-desc") return [...out].sort((a, b) => b.price - a.price);
+    if (s === "newest") return [...out].sort((a, b) => new Date(b.listedDate) - new Date(a.listedDate));
+    return out;
+  }
+
+  open(id) {
+    this.setState(s => ({ viewed: [id, ...s.viewed.filter(v => v !== id)] }));
+  }
+
+  setStatus(id, next) {
+    this.setState(s => {
+      const status = { ...s.status };
+      status[id] = status[id] === next ? "search" : next;
+      return { status };
+    });
+  }
+
+  price(p) {
+    return p >= 1000000 ? "$" + (p / 1000000).toFixed(2) + "M" : "$" + Math.round(p / 1000) + "K";
+  }
+
+  renderVals() {
+    const list = this.filtered();
+    const route = this.state.route;
+    const titles = { search: "Search", "my-searches": "Downtown condo sweep", interested: "Interested", "not-interested": "Not Interested", "recently-viewed": "Recently Viewed" };
+    const nav = k => (route === k ? NAV_ON : NAV);
+
+    const cards = list.map(p => {
+      const liked = this.statusOf(p.id) === "interested";
+      const disliked = this.statusOf(p.id) === "notInterested";
+      const signal = p.hasPriceCut ? "PRICE CUT" : p.isNew ? "NEW" : null;
+      const signalColors = signal === "NEW" ? ["#FFF7E0", "#6F4E00", "#F2D68A"] : ["#EAFBF2", "#067647", "#A7E8C4"];
+      const mls = MLS[p.mlsStatus] || "ACTIVE";
+      const mc = MLS_COLORS[mls];
+      return {
+        ...p,
+        sqftLabel: p.sqft.toLocaleString(),
+        imgStyle: "height:100%;width:100%;background-image:url('" + p.img + "');background-size:cover;background-position:center;background-repeat:no-repeat;cursor:pointer",
+        priceLabel: this.price(p.price),
+        signal,
+        signalStyle: signal ? BADGE + ";background:" + signalColors[0] + ";color:" + signalColors[1] + ";border-color:" + signalColors[2] : "display:none",
+        mls,
+        mlsStyle: BADGE + ";background:" + mc[0] + ";color:" + mc[1] + ";border-color:" + mc[2],
+        heartFill: liked ? "currentColor" : "none",
+        likeStyle: "flex:1;height:48px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:16px;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s ease;box-shadow:0 1px 2px rgba(0,0,0,.05);" +
+          (liked ? "background:#DC2626;color:#fff;border:1px solid transparent" : "background:#fff;border:1px solid #E2E8F0;color:#334155"),
+        dislikeStyle: "height:48px;width:48px;display:inline-flex;align-items:center;justify-content:center;border-radius:16px;cursor:pointer;transition:all .15s ease;" +
+          (disliked ? "border:1px solid #FECACA;background:#FEF2F2;color:#DC2626" : "border:1px solid #E2E8F0;background:#F8FAFC;color:#94A3B8"),
+        open: () => this.open(p.id),
+        like: () => this.setStatus(p.id, "interested"),
+        dislike: () => this.setStatus(p.id, "notInterested")
+      };
+    });
+
+    const markers = list.map(p => ({
+      label: "$" + Math.round(p.price / 1000) + "K",
+      wrapStyle: "position:absolute;border:none;background:transparent;padding:0;cursor:pointer;top:" + p.markerTop + ";left:" + p.markerLeft,
+      pinStyle: "border-radius:9999px;border:1px solid #fff;background:#2563EB;padding:4px 12px;font-size:12px;font-weight:600;color:#fff;box-shadow:0 8px 12px -4px rgba(0,0,0,.35)",
+      open: () => this.open(p.id)
+    }));
+
+    return {
+      ...this.docsVals(),
+      list: cards,
+      markers,
+      isEmpty: list.length === 0,
+      visibleCount: list.length,
+      totalCount: this.base().length,
+      pageTitle: titles[route] || "Search",
+      location: this.state.location,
+      onLocation: e => this.setState({ location: e.target.value }),
+      priceLabel: PRICE_STEPS[this.state.priceIdx].label,
+      pricePill: this.state.priceIdx ? PILL_ON : PILL,
+      cyclePrice: () => this.setState(s => ({ priceIdx: (s.priceIdx + 1) % PRICE_STEPS.length })),
+      bedsLabel: this.state.bedIdx ? BED_STEPS[this.state.bedIdx] + " bd" : "Beds & baths",
+      bedsPill: this.state.bedIdx ? PILL_ON : PILL,
+      cycleBeds: () => this.setState(s => ({ bedIdx: (s.bedIdx + 1) % BED_STEPS.length })),
+      typeLabel: this.state.typeIdx ? TYPE_STEPS[this.state.typeIdx] : "Property type",
+      typePill: this.state.typeIdx ? PILL_ON : PILL,
+      cycleType: () => this.setState(s => ({ typeIdx: (s.typeIdx + 1) % TYPE_STEPS.length })),
+      sortLabel: SORTS[this.state.sortIdx].label,
+      cycleSort: () => this.setState(s => ({ sortIdx: (s.sortIdx + 1) % SORTS.length })),
+      drawLabel: this.state.drawing ? "Stop drawing" : "Draw",
+      drawPill: this.state.drawing ? PILL_ON : PILL,
+      toggleDraw: () => this.setState(s => ({ drawing: !s.drawing, boundary: s.drawing ? true : s.boundary })),
+      boundary: this.state.boundary && !this.state.drawing,
+      boundaryLabel: this.state.boundary ? "Boundary active" : "No boundary set",
+      interestedCount: DATA.filter(p => this.statusOf(p.id) === "interested").length,
+      notCount: DATA.filter(p => this.statusOf(p.id) === "notInterested").length,
+      recentCount: this.state.viewed.length,
+      listInactive: this.state.view === "map" ? "true" : "false",
+      mapInactive: this.state.view === "list" ? "true" : "false",
+      listTab: TAB(this.state.view === "list"),
+      mapTab: TAB(this.state.view === "map"),
+      showList: () => this.setState({ view: "list" }),
+      showMap: () => this.setState({ view: "map" }),
+      navSearch: nav("search"),
+      navSaved: nav("my-searches"),
+      navInterested: nav("interested"),
+      navNot: nav("not-interested"),
+      navRecent: nav("recently-viewed"),
+      goSearch: () => this.setState({ route: "search" }),
+      goSaved: () => this.setState({ route: "my-searches" }),
+      goInterested: () => this.setState({ route: "interested" }),
+      goNotInterested: () => this.setState({ route: "not-interested" }),
+      goRecent: () => this.setState({ route: "recently-viewed" })
+    };
+  }
+}
+</script>
+</body>
+</html>
