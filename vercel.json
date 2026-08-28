@@ -4,7 +4,6 @@
   "cleanUrls": false,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/client-portal", "destination": "/Client Portal (web).dc.html" },
-    { "source": "/client-portal.html", "destination": "/Client Portal (web).dc.html" }
+    { "source": "/client-portal", "destination": "/client-portal.html" }
   ]
 }
